@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter+Tight:wght@800&family=Michroma&family=VT323&display=swap">
 <style>
-	/*Software 98: a dark shelf of jewel cases under a spinning chrome logo*/
+	/*Software 98: a dark shelf of 3D cases under a low-poly chrome logo*/
 	:root {
 		--night: #07070b;
 		--night-2: #10101a;
@@ -46,6 +46,10 @@
 
 	* {
 		box-sizing: border-box;
+	}
+
+	[hidden] {
+		display: none !important;
 	}
 
 	html {
@@ -112,9 +116,9 @@
 		padding-right: max(16px, env(safe-area-inset-right, 0px));
 	}
 
-	/*Hero: the logo as a 90s 3D title, extruded, floating, turning, with light passing over its chrome*/
+	/*Hero: the logo as a low-poly 3D model, drawn as a 1998 console would draw it*/
 	.hero {
-		padding-top: 56px;
+		padding-top: 40px;
 		padding-bottom: 24px;
 		text-align: center;
 	}
@@ -131,87 +135,41 @@
 
 	.stage {
 		position: relative;
-		width: min(780px, 100%);
+		width: min(860px, 100%);
 		margin: 0 auto;
-		perspective: 2400px; /* a long lens: the layers behind barely shrink, so the logo's sides show as it turns */
 	}
 
-	.tilt {
-		transform-style: preserve-3d;
-		transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-		transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+	/*The flat logo, until the 3D one is ready, and for browsers without WebGL*/
+	.logo-flat {
+		display: block;
+		width: 90%;
+		height: auto;
+		margin: 6% auto;
 	}
 
-	.logo3d {
-		position: relative;
-		aspect-ratio: 962 / 222;
-		transform-style: preserve-3d;
-		animation: hover3d 9s ease-in-out infinite;
-	}
-
-	@keyframes hover3d {
-		0%,
-		100% {
-			transform: translateY(0) rotateY(-20deg) rotateX(8deg) rotateZ(-1deg);
-		}
-		50% {
-			transform: translateY(-10px) rotateY(20deg) rotateX(-6deg) rotateZ(1deg);
-		}
-	}
-
-	.logo3d img,
-	.shine {
-		position: absolute;
-		inset: 0;
+	/*Drawn small and shown big, with hard pixel edges, as on a CRT in 1998*/
+	.logo-gl {
+		display: block;
 		width: 100%;
-		height: 100%;
+		height: auto;
+		aspect-ratio: 860 / 320;
+		image-rendering: pixelated;
 	}
 
-	/*The layers behind the face, each a little further back and darker: the logo's depth*/
-	.logo3d .depth {
-		filter: brightness(var(--shade, 0.3)) saturate(0.55);
-	}
-
-	.logo3d .face {
-		transform: translateZ(1px);
-	}
-
-	/*A band of light sweeping across the chrome, cut to the logo's shape*/
-	.shine {
-		transform: translateZ(2px);
-		background: linear-gradient(105deg, transparent 0 42%, rgba(255, 255, 255, 0.85) 49%, rgba(200, 230, 255, 0.5) 51%, transparent 58% 100%) no-repeat;
-		background-size: 300% 100%;
-		-webkit-mask: url('assets/logo.webp') center / 100% 100% no-repeat;
-		mask: url('assets/logo.webp') center / 100% 100% no-repeat;
-		mix-blend-mode: screen;
-		animation: shine 5.5s ease-in-out infinite;
-	}
-
-	@keyframes shine {
-		0%,
-		35% {
-			background-position: 120% 0;
-		}
-		75%,
-		100% {
-			background-position: -20% 0;
-		}
-	}
-
-	/*Its shadow on the floor, which breathes as the logo rises*/
+	/*Its shadow on the floor*/
 	.floor {
-		width: 62%;
-		height: 26px;
-		margin: 18px auto 0;
+		width: 58%;
+		height: 22px;
+		margin: -6px auto 0;
 		border-radius: 50%;
-		background: radial-gradient(ellipse, rgba(0, 0, 0, 0.75), transparent 70%);
-		animation: floor 9s ease-in-out infinite;
+		background: radial-gradient(ellipse, rgba(0, 0, 0, 0.8), transparent 70%);
+		animation: floor 7s ease-in-out infinite;
 	}
 
 	@keyframes floor {
 		50% {
-			transform: scaleX(0.86);
-			opacity: 0.6;
+			transform: scaleX(0.88);
+			opacity: 0.65;
 		}
 	}
 
@@ -266,72 +224,154 @@
 		list-style: none;
 	}
 
-	/*A jewel case: black hinge and spine on the left, the cover under clear plastic*/
+	/*A case: a real box in 3D, six faces, turned so its spine shows; it turns to face you on hover*/
 	.item {
 		display: block;
 		color: inherit;
 		text-decoration: none;
 	}
 
-	.case {
-		position: relative;
-		display: grid;
-		grid-template-columns: 30px 1fr;
-		padding: 5px;
-		border-radius: 3px;
-		background: linear-gradient(135deg, #3a3a44, #121218 40%, #23232c);
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), inset 0 0 0 2px rgba(0, 0, 0, 0.8), 0 14px 26px rgba(0, 0, 0, 0.6);
-		transform: perspective(900px);
-		transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1.2), box-shadow 0.35s;
+	.box-stage {
+		container-type: inline-size;
+		perspective: 1100px;
+		perspective-origin: 50% 30%;
+		padding: 2cqw 0 0;
 	}
 
-	.spine {
+	.box {
+		--hinge: 5cqw;
+		--d: 8cqw; /* a jewel case: about a fifteenth as thick as it is wide */
+		--w: 86cqw;
+		--h: calc((var(--w) - var(--hinge)) * 250 / 315);
 		position: relative;
+		width: var(--w);
+		height: var(--h);
+		margin: 0 auto;
+		transform-style: preserve-3d;
+		transform: rotateX(-7deg) rotateY(24deg);
+		transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1.15);
+	}
+
+	/*A PC game's keep case: portrait, and thicker*/
+	.box.tall {
+		--d: 13cqw;
+		--w: 80cqw;
+		--h: calc((var(--w) - var(--hinge)) * 1151 / 765);
+	}
+
+	.item:hover .box,
+	.item:focus-visible .box {
+		transform: rotateX(-3deg) rotateY(-6deg) translateZ(4cqw) translateY(-2cqw);
+	}
+
+	.face {
+		position: absolute;
+		overflow: hidden;
+		backface-visibility: hidden;
+	}
+
+	.front {
+		inset: 0;
+		display: grid;
+		grid-template-columns: var(--hinge) 1fr;
+		background: #0c0c11;
+		transform: translateZ(calc(var(--d) / 2));
+	}
+
+	.back {
+		inset: 0;
+		background: linear-gradient(135deg, #1b1b22, #0b0b0f);
+		transform: rotateY(180deg) translateZ(calc(var(--d) / 2));
+	}
+
+	.side,
+	.spine {
+		top: 0;
+		left: calc(50% - var(--d) / 2);
+		width: var(--d);
+		height: 100%;
+	}
+
+	.end {
+		left: 0;
+		top: calc(50% - var(--d) / 2);
+		width: 100%;
+		height: var(--d);
+	}
+
+	/*The spine: the printed strip of the insert, seen through the hinge*/
+	.spine {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-between;
-		padding: 6px 0;
-		background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 4px), linear-gradient(90deg, #0c0c11, #24242d 60%, #0c0c11);
-		border-right: 1px solid rgba(255, 255, 255, 0.15);
+		padding: 1.4cqw 0;
+		background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px), linear-gradient(90deg, #08080c, #1d1d26 50%, #08080c);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+		transform: rotateY(-90deg) translateZ(calc(var(--w) / 2));
 	}
 
 	.spine img {
-		width: 20px;
-		height: 20px;
-		border-radius: 3px;
+		width: 70%;
+		height: auto;
+		border-radius: 2px;
 	}
 
 	.spine-name {
 		writing-mode: vertical-rl;
 		transform: rotate(180deg);
-		color: #e8e8ee;
-		font: 10px/1 var(--wide);
+		color: #ececf2;
+		font: 2.9cqw/1 var(--wide);
 		letter-spacing: 0.14em;
 		white-space: nowrap;
+	}
+
+	.box.tall .spine-name {
+		font-size: 3.6cqw;
 	}
 
 	.spine-platform {
 		writing-mode: vertical-rl;
 		transform: rotate(180deg);
-		padding: 4px 1px;
+		padding: 0.8cqw 0.2cqw;
 		background: var(--ink);
 		color: #000000;
-		font: 15px/1 var(--pixel);
+		font: 4.4cqw/1 var(--pixel);
 		letter-spacing: 0.08em;
+	}
+
+	/*The clear plastic edges: the opening side, the top and the bottom*/
+	.side {
+		background: linear-gradient(90deg, #5d6070, #c9ccd8 30%, #6c6f80 55%, #2b2c35), #3a3b46;
+		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+		transform: rotateY(90deg) translateZ(calc(var(--w) / 2));
+	}
+
+	.end {
+		background: linear-gradient(180deg, #2b2c35, #b7bac8 35%, #5d6070 60%, #23242c);
+		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+	}
+
+	.top {
+		transform: rotateX(90deg) translateZ(calc(var(--h) / 2));
+	}
+
+	.bottom {
+		filter: brightness(0.45);
+		transform: rotateX(-90deg) translateZ(calc(var(--h) / 2));
+	}
+
+	/*The hinge strip down the front's left edge*/
+	.hinge {
+		background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 4px), linear-gradient(90deg, #111117, #33333e 55%, #0b0b10);
+		box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.25);
 	}
 
 	.cover {
 		position: relative;
 		display: block;
-		aspect-ratio: 315 / 250;
 		overflow: hidden;
 		background: #000000;
-	}
-
-	/*A PC game's box art: portrait, as on the shelf in 1998*/
-	.cover-tall {
-		aspect-ratio: 765 / 1151;
 	}
 
 	.cover > img {
@@ -341,29 +381,33 @@
 		object-fit: cover;
 	}
 
-	/*The clear plastic over the cover: its gloss, and a glint that crosses it on hover*/
-	.case::after {
+	/*The clear plastic over the front: its gloss, its edge, and a glint that crosses it on hover*/
+	.front::after {
 		content: '';
 		position: absolute;
-		inset: 5px;
-		border-radius: 2px;
-		background: linear-gradient(120deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 22%, transparent 34%, transparent 70%, rgba(255, 255, 255, 0.08) 86%, transparent 100%), linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.45) 50%, transparent 60%) no-repeat;
+		inset: 0;
+		background: linear-gradient(120deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 22%, transparent 34%, transparent 70%, rgba(255, 255, 255, 0.09) 86%, transparent 100%), linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.5) 50%, transparent 60%) no-repeat;
 		background-size: 100% 100%, 300% 100%;
 		background-position: 0 0, 130% 0;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28), inset 0 0 0 2px rgba(0, 0, 0, 0.6);
 		pointer-events: none;
-		transition: background-position 0.8s ease;
+		transition: background-position 0.9s ease;
 	}
 
-	.item:hover .case,
-	.item:focus-visible .case {
-		transform: perspective(900px) translateY(-8px) rotateY(-10deg) rotateZ(-2.5deg) scale(1.06);
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 0 0 2px rgba(0, 0, 0, 0.8), 18px 26px 40px rgba(0, 0, 0, 0.75);
-	}
-
-	.item:hover .case::after,
-	.item:focus-visible .case::after {
+	.item:hover .front::after,
+	.item:focus-visible .front::after {
 		background-position: 0 0, -30% 0;
+	}
+
+	/*Its shadow on the shelf*/
+	.box-stage::after {
+		content: '';
+		display: block;
+		width: 70%;
+		height: 4cqw;
+		margin: 1cqw auto 0;
+		border-radius: 50%;
+		background: radial-gradient(ellipse, rgba(0, 0, 0, 0.7), transparent 70%);
 	}
 
 	.item:focus-visible {
@@ -536,18 +580,12 @@
 		}
 
 		body::before,
-		.logo3d,
-		.shine,
 		.floor {
 			animation: none;
 		}
 
-		.tilt {
-			transition: none;
-		}
-
-		.case,
-		.case::after {
+		.box,
+		.front::after {
 			transition: none;
 		}
 	}
@@ -557,12 +595,8 @@
 <header class="hero wrap" id="top">
 	<h1 class="visually-hidden">Software 98</h1>
 	<div class="stage" aria-hidden="true">
-		<div class="tilt" id="tilt">
-			<div class="logo3d" id="logo3d">
-				<img class="face" src="assets/logo.webp" width="962" height="222" alt="">
-				<div class="shine"></div>
-			</div>
-		</div>
+		<img class="logo-flat" id="logo-flat" src="assets/logo.webp" width="962" height="222" alt="">
+		<canvas class="logo-gl" id="logo-gl" hidden></canvas>
 		<div class="floor"></div>
 	</div>
 	<p class="tagline">Games - Apps</p>
@@ -576,13 +610,19 @@
 		<ul class="cases">
 			<li>
 				<a class="item" href="https://store.steampowered.com/app/3441240/Gridiron_Masters_98/">
-					<div class="case">
-						<div class="spine" aria-hidden="true">
+					<div class="box-stage" aria-hidden="true">
+						<div class="box tall">
+							<div class="face front"><div class="hinge"></div><div class="cover"><img src="assets/gm98-box.jpg" width="765" height="1151" alt=""></div></div>
+							<div class="face back"></div>
+							<div class="face spine">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
 							<span class="spine-platform">PC</span>
+							</div>
+							<div class="face side"></div>
+							<div class="face end top"></div>
+							<div class="face end bottom"></div>
 						</div>
-						<div class="cover cover-tall"><img src="assets/gm98-box.jpg" width="765" height="1151" alt=""></div>
 					</div>
 					<div class="info">
 						<h3>Gridiron Masters '98 <span class="price">$9.99</span></h3>
@@ -601,15 +641,22 @@
 		<ul class="cases">
 			<li>
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.software98.foodtrax">
-					<div class="case">
-						<div class="spine" aria-hidden="true">
+					<div class="box-stage" aria-hidden="true">
+						<div class="box">
+							<div class="face front"><div class="hinge"></div><div class="cover cover-foodtrax">
+								<img src="assets/foodtrax-icon.png" width="192" height="192" alt="">
+								<strong>Food<span>Trax</span></strong>
+								
+							</div></div>
+							<div class="face back"></div>
+							<div class="face spine">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
 							<span class="spine-platform">MOBILE</span>
-						</div>
-						<div class="cover cover-foodtrax">
-							<img src="assets/foodtrax-icon.png" width="192" height="192" alt="">
-							<strong>Food<span>Trax</span></strong>
+							</div>
+							<div class="face side"></div>
+							<div class="face end top"></div>
+							<div class="face end bottom"></div>
 						</div>
 					</div>
 					<div class="info">
@@ -622,13 +669,19 @@
 			</li>
 			<li>
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.baccy.baccaratsimulator">
-					<div class="case">
-						<div class="spine" aria-hidden="true">
+					<div class="box-stage" aria-hidden="true">
+						<div class="box">
+							<div class="face front"><div class="hinge"></div><div class="cover"><img src="assets/baccarat-table.jpg" width="630" height="500" alt=""></div></div>
+							<div class="face back"></div>
+							<div class="face spine">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
 							<span class="spine-platform">MOBILE</span>
+							</div>
+							<div class="face side"></div>
+							<div class="face end top"></div>
+							<div class="face end bottom"></div>
 						</div>
-						<div class="cover"><img src="assets/baccarat-table.jpg" width="630" height="500" alt=""></div>
 					</div>
 					<div class="info">
 						<h3>Baccarat Simulator</h3>
@@ -639,15 +692,22 @@
 			</li>
 			<li>
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.just.baccarat">
-					<div class="case">
-						<div class="spine" aria-hidden="true">
+					<div class="box-stage" aria-hidden="true">
+						<div class="box">
+							<div class="face front"><div class="hinge"></div><div class="cover cover-foodtrax cover-felt">
+								<img src="assets/just-baccarat-icon.png" width="192" height="192" alt="">
+								<strong>JUST BACCARAT</strong>
+								
+							</div></div>
+							<div class="face back"></div>
+							<div class="face spine">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
 							<span class="spine-platform">MOBILE</span>
-						</div>
-						<div class="cover cover-foodtrax cover-felt">
-							<img src="assets/just-baccarat-icon.png" width="192" height="192" alt="">
-							<strong>JUST BACCARAT</strong>
+							</div>
+							<div class="face side"></div>
+							<div class="face end top"></div>
+							<div class="face end bottom"></div>
 						</div>
 					</div>
 					<div class="info">
@@ -675,39 +735,200 @@
 	<p class="copyright">© <span id="year">2026</span> Software 98</p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-	//The logo's depth: copies of it stacked behind the face, each a pixel further back
-	const logo = document.getElementById('logo3d');
-	const DEPTH = 48;
-	const face = logo.querySelector('.face');
+	//The logo as a low-poly model, drawn as a 1998 console would: few polygons, vertices that snap to the pixel grid,
+	//textures that warp across them, flat shading in a few steps, and 15-bit colour with ordered dithering
+	const startLogo = () => {
+		const canvas = document.getElementById('logo-gl');
+		const flat = document.getElementById('logo-flat');
+		const isStill = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let renderer;
 
-	for (let i = DEPTH; i >= 1; i--) {
-		const layer = document.createElement('img');
-		layer.className = 'depth';
-		layer.src = face.src;
-		layer.alt = '';
-		layer.setAttribute('aria-hidden','true');
-		layer.style.transform = `translateZ(${-i * 1.5}px)`;
-		layer.style.setProperty('--shade',(0.55 - 0.4 * i / DEPTH).toFixed(3)); // lit at the front edge, dark at the back
-		logo.insertBefore(layer,face);
-	}
+		if (!window.THREE) {
+			return;
+		}
 
-	//The logo leans a little toward the pointer, on top of its own slow turn
-	const tilt = document.getElementById('tilt');
-	const isStill = matchMedia('(prefers-reduced-motion: reduce)').matches;
+		try {
+			renderer = new THREE.WebGLRenderer({canvas,antialias:false,alpha:true});
+		} catch {
+			return;
+		}
 
-	if (!isStill) {
-		addEventListener('pointermove',(event) => {
-			if (event.pointerType !== 'mouse') {
+		//The logo's shapes in world units, measured from the artwork (962 x 222 px, 100 px to a unit, centred)
+		const SIZE = {x:9.62,y:2.22};
+		const ELLIPSE = {cx:0.06,rx:3.24,ry:1.12,shear:0.145,sides:22,depth:0.56};
+		const BAR = {points:[[-4.6,0.49],[4.83,0.49],[4.6,-0.56],[-4.84,-0.56]],depth:1.0};
+
+		const getEllipse = () => {
+			const shape = new THREE.Shape();
+			const k = 1 / Math.cos(Math.PI / ELLIPSE.sides); // the polygon goes round the ellipse, not inside it
+
+			for (let i = 0; i < ELLIPSE.sides; i++) {
+				const a = i / ELLIPSE.sides * Math.PI * 2;
+				const y = Math.sin(a) * ELLIPSE.ry * k;
+				const x = ELLIPSE.cx + Math.cos(a) * ELLIPSE.rx * k + ELLIPSE.shear * y;
+				i === 0 ? shape.moveTo(x,y) : shape.lineTo(x,y);
+			}
+
+			return shape;
+		};
+
+		const getBar = () => new THREE.Shape(BAR.points.map(([x,y]) => new THREE.Vector2(x,y)));
+
+		const shared = {
+			uRes:{value:new THREE.Vector2(1,1)},
+			uShine:{value:-1},
+			uMin:{value:new THREE.Vector2(-SIZE.x / 2,-SIZE.y / 2)},
+			uSize:{value:new THREE.Vector2(SIZE.x,SIZE.y)},
+		};
+
+		const VERTEX = `
+			uniform vec2 uRes;
+			uniform vec2 uMin;
+			uniform vec2 uSize;
+			varying vec3 vAffine;
+			varying vec3 vView;
+			varying float vFront;
+
+			void main() {
+				vec4 view = modelViewMatrix * vec4(position, 1.0);
+				vec4 clip = projectionMatrix * view;
+				vec2 grid = uRes * 0.5;
+				clip.xy = floor(clip.xy / clip.w * grid + 0.5) / grid * clip.w; // vertices snap to whole pixels
+				gl_Position = clip;
+				vec2 uv = (position.xy - uMin) / uSize;
+				vAffine = vec3(uv * clip.w, clip.w); // read back as uv, this undoes perspective correction: affine, warping textures
+				vView = view.xyz;
+				vFront = normal.z;
+			}
+		`;
+
+		const FRAGMENT = `
+			uniform sampler2D uTex;
+			uniform vec3 uRim;
+			uniform vec3 uSide;
+			uniform vec2 uRes;
+			uniform float uShine;
+			varying vec3 vAffine;
+			varying vec3 vView;
+			varying float vFront;
+
+			float getBayer2(vec2 a) {
+				a = floor(a);
+				return fract(dot(a, vec2(0.5, a.y * 0.75)));
+			}
+
+			float getBayer4(vec2 a) {
+				return getBayer2(0.5 * a) * 0.25 + getBayer2(a);
+			}
+
+			void main() {
+				vec3 normal = normalize(cross(dFdx(vView), dFdy(vView))); // one normal per polygon: flat shading
+				float light = max(dot(normal, normalize(vec3(-0.45, 0.55, 0.7))), 0.0);
+				vec3 colour;
+
+				if (vFront > 0.5) {
+					vec4 texel = texture2D(uTex, vAffine.xy / vAffine.z);
+					colour = mix(uRim, texel.rgb, texel.a) * (0.82 + 0.28 * light);
+					float across = gl_FragCoord.x / uRes.x + gl_FragCoord.y / uRes.y * 0.35;
+					colour += smoothstep(0.09, 0.0, abs(across - uShine)) * 0.6 * texel.a;
+				} else {
+					float lit = floor((0.3 + 0.85 * light) * 5.0 + 0.5) / 5.0;
+					colour = uSide * lit;
+				}
+
+				colour = floor(colour * 31.0 + getBayer4(gl_FragCoord.xy)) / 31.0; // 5 bits a channel, dithered
+				gl_FragColor = vec4(colour, 1.0);
+			}
+		`;
+
+		const makeMaterial = (texture,rim,side) => new THREE.ShaderMaterial({
+			uniforms:{...shared,uTex:{value:texture},uRim:{value:new THREE.Color(...rim)},uSide:{value:new THREE.Color(...side)}},
+			vertexShader:VERTEX,
+			fragmentShader:FRAGMENT,
+			extensions:{derivatives:true},
+		});
+
+		const makeSlab = (shape,depth,material) => {
+			const geometry = new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:false});
+			geometry.translate(0,0,-depth / 2);
+			return new THREE.Mesh(geometry,material);
+		};
+
+		new THREE.TextureLoader().load('assets/logo.webp',(texture) => {
+			texture.magFilter = THREE.NearestFilter;
+			texture.minFilter = THREE.NearestFilter;
+			texture.generateMipmaps = false;
+
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera(26,860 / 320,0.1,100);
+			const logo = new THREE.Group();
+			logo.add(makeSlab(getEllipse(),ELLIPSE.depth,makeMaterial(texture,[0.88,0.9,0.95],[0.78,0.8,0.88])));
+			logo.add(makeSlab(getBar(),BAR.depth,makeMaterial(texture,[0.02,0.02,0.03],[0.34,0.34,0.4])));
+			scene.add(logo);
+			camera.position.set(0,0.3,9.4);
+			camera.lookAt(0,0,0);
+
+			//Drawn at about half the page's pixels and stretched, so the pixels show
+			const fit = () => {
+				const width = Math.min(560,Math.round(canvas.clientWidth * 0.62));
+				const height = Math.round(width * 320 / 860);
+				renderer.setPixelRatio(1);
+				renderer.setSize(width,height,false);
+				shared.uRes.value.set(width,height);
+			};
+
+			const pointer = {x:0,y:0};
+			addEventListener('pointermove',(event) => {
+				if (event.pointerType === 'mouse') {
+					pointer.x = event.clientX / innerWidth - 0.5;
+					pointer.y = event.clientY / innerHeight - 0.5;
+				}
+			});
+
+			const SHINE_EVERY = 5.5;
+			const draw = (seconds) => {
+				logo.rotation.y = Math.sin(seconds * 0.55) * 0.42 + pointer.x * 0.3;
+				logo.rotation.x = Math.sin(seconds * 0.4) * 0.12 + pointer.y * 0.2;
+				logo.rotation.z = Math.sin(seconds * 0.55) * 0.02;
+				logo.position.y = Math.sin(seconds * 0.9) * 0.1;
+				const phase = (seconds % SHINE_EVERY) / SHINE_EVERY;
+				shared.uShine.value = phase < 0.5 ? -1 : -0.3 + (phase - 0.5) / 0.4 * 1.9;
+				renderer.render(scene,camera);
+			};
+
+			canvas.hidden = false;
+			flat.hidden = true;
+			fit();
+			addEventListener('resize',fit);
+
+			if (isStill) {
+				draw(2.2); // one still frame, turned enough to show the depth
+				addEventListener('resize',() => draw(2.2));
 				return;
 			}
 
-			const x = event.clientX / innerWidth - 0.5;
-			const y = event.clientY / innerHeight - 0.5;
-			tilt.style.setProperty('--tilt-y',`${(x * 14).toFixed(2)}deg`);
-			tilt.style.setProperty('--tilt-x',`${(-y * 10).toFixed(2)}deg`);
+			//Runs only while the logo is on screen
+			let isShown = true;
+			new IntersectionObserver(([entry]) => {
+				isShown = entry.isIntersecting;
+			}).observe(canvas);
+
+			const start = performance.now();
+			const loop = (now) => {
+				if (isShown && !document.hidden) {
+					draw((now - start) / 1000);
+				}
+
+				requestAnimationFrame(loop);
+			};
+
+			requestAnimationFrame(loop);
 		});
-	}
+	};
+
+	startLogo();
 
 	document.getElementById('year').textContent = new Date().getFullYear();
 </script>
