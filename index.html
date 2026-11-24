@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software-98</title>
+<meta name="description" content="Software-98, maker of FoodTrax: grocery lists, budgets and calorie tracking for Android.">
+<style>
+	:root {
+		--bg: #f4f6f3;
+		--surface: #ffffff;
+		--text: #16201a;
+		--muted: #56635b;
+		--line: #dde3dc;
+		--accent: #22794a;
+		color-scheme: light;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg: #121614;
+			--surface: #1b211e;
+			--text: #e6ece7;
+			--muted: #9aa69e;
+			--line: #2e3631;
+			--accent: #5cc98a;
+			color-scheme: dark;
+		}
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font: 17px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	}
+
+	main {
+		max-width: 640px;
+		margin: 0 auto;
+		padding: 48px 16px;
+	}
+
+	.card {
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-radius: 16px;
+		padding: 24px;
+	}
+
+	h1 {
+		margin: 0 0 4px;
+		font-size: 1.9rem;
+	}
+
+	h2 {
+		margin: 0 0 8px;
+	}
+
+	p {
+		margin: 0 0 16px;
+	}
+
+	.muted {
+		color: var(--muted);
+	}
+
+	a {
+		color: var(--accent);
+		font-weight: 600;
+	}
+</style>
+</head>
+<body>
+<main>
+	<h1>Software-98</h1>
+	<p class="muted">Small apps that do one job well.</p>
+	<div class="card">
+		<h2>FoodTrax</h2>
+		<p>Grocery lists, a monthly food budget and calorie tracking in one Android app. Scan barcodes, keep kits of items you buy often, and share a list live with your household.</p>
+		<p><a href="https://play.google.com/store/apps/details?id=com.software98.foodtrax">Get it on Google Play</a></p>
+		<p><a href="https://software-98.github.io/foodtrax-privacy/">Privacy policy</a></p>
+	</div>
+</main>
+</body>
+</html>
