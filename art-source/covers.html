@@ -3,19 +3,18 @@
 <head>
 <meta charset="utf-8">
 <title>Covers: Baccarat Simulator, Just Baccarat</title>
-<!--The box art for the two Baccarat apps, drawn as 90s game covers. Each .cover is 630 x 500 and is rendered at 2x to assets/ (see README)-->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Michroma&family=VT323&display=block">
+<!--Box art for the two Baccarat apps, in the manner of a late-90s casino CD-ROM: gold arched title, ribbon, light rays, sparkle, a collage of cards and chips, feature seals.
+Each .cover is 630 x 500 and is rendered at 2x into assets/ (see README)-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Michroma&display=block">
 <style>
 	:root {
-		--felt: #0b6b42;
-		--felt-dark: #03311d;
-		--gold-1: #fff1b8;
-		--gold-2: #e9c25a;
-		--gold-3: #9c6a17;
-		--red: #c0182b;
-		--black: #18181b;
+		--gold-1: #fff6c9;
+		--gold-2: #f0c757;
+		--gold-3: #a66d12;
+		--gold-4: #5a3606;
+		--red: #c3162a;
+		--black: #141416;
 		--card: #fffdf6;
-		--noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 	}
 
 	* {
@@ -39,21 +38,129 @@
 		font-family: 'Cinzel', Georgia, serif;
 	}
 
-	/*Felt: the cloth's weave as fine noise*/
-	.felt {
+	/*Light rays from behind the title*/
+	.rays {
+		position: absolute;
+		left: 50%;
+		top: 150px;
+		width: 1200px;
+		height: 1200px;
+		margin: -600px 0 0 -600px;
+		background: repeating-conic-gradient(rgba(255, 230, 160, 0.13) 0 5deg, transparent 5deg 14deg);
+		-webkit-mask: radial-gradient(circle, #000000 0, rgba(0, 0, 0, 0.6) 25%, transparent 55%);
+		mask: radial-gradient(circle, #000000 0, rgba(0, 0, 0, 0.6) 25%, transparent 55%);
+	}
+
+	/*Casino lights, out of focus*/
+	.bokeh {
 		position: absolute;
 		inset: 0;
-		background: var(--noise), radial-gradient(ellipse 80% 70% at 50% 35%, #12844f 0%, var(--felt) 40%, var(--felt-dark) 100%);
+		background:
+			radial-gradient(circle at 8% 22%, rgba(255, 210, 120, 0.55) 0 7px, transparent 18px),
+			radial-gradient(circle at 16% 9%, rgba(255, 120, 120, 0.4) 0 10px, transparent 24px),
+			radial-gradient(circle at 92% 14%, rgba(255, 220, 140, 0.5) 0 9px, transparent 22px),
+			radial-gradient(circle at 84% 30%, rgba(140, 190, 255, 0.35) 0 6px, transparent 16px),
+			radial-gradient(circle at 96% 44%, rgba(255, 200, 120, 0.4) 0 12px, transparent 28px),
+			radial-gradient(circle at 4% 48%, rgba(255, 160, 90, 0.35) 0 9px, transparent 22px),
+			radial-gradient(circle at 26% 34%, rgba(255, 240, 200, 0.3) 0 4px, transparent 11px),
+			radial-gradient(circle at 74% 6%, rgba(255, 240, 200, 0.35) 0 5px, transparent 13px);
+	}
+
+	/*A four-pointed glint*/
+	.glint {
+		position: absolute;
+		width: 70px;
+		height: 70px;
+		margin: -35px 0 0 -35px;
+		background: radial-gradient(circle, #ffffff 0 3px, rgba(255, 250, 220, 0.6) 5px, transparent 14px), linear-gradient(90deg, transparent 0 46%, rgba(255, 255, 255, 0.9) 50%, transparent 54%), linear-gradient(0deg, transparent 0 46%, rgba(255, 255, 255, 0.9) 50%, transparent 54%);
+		-webkit-mask: radial-gradient(circle, #000000 20%, transparent 70%);
+		mask: radial-gradient(circle, #000000 20%, transparent 70%);
+		z-index: 4;
+	}
+
+	/*The platform strip across the top, as on a CD-ROM box*/
+	.strip {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 30px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 12px;
+		background: linear-gradient(180deg, #2a2a2e, #050506);
+		border-bottom: 2px solid var(--gold-2);
+		color: #ffffff;
+		font: 11px/1 'Michroma', sans-serif;
+		letter-spacing: 0.12em;
+		z-index: 5;
+	}
+
+	.strip img {
+		height: 22px;
+	}
+
+	.title {
+		position: absolute;
+		left: 0;
+		top: 26px;
+		width: 630px;
+		height: 190px;
+		overflow: visible;
+	}
+
+	/*Ribbon banner*/
+	.ribbon {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.6));
+		z-index: 3;
+	}
+
+	.ribbon .band {
+		position: relative;
+		padding: 8px 34px 7px;
+		background: linear-gradient(180deg, #e8293e 0%, var(--red) 45%, #7d0c19 100%);
+		border-top: 2px solid var(--gold-2);
+		border-bottom: 2px solid var(--gold-2);
+		color: var(--gold-1);
+		font: 900 26px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.22em;
+		white-space: nowrap;
+		text-shadow: 0 2px 0 #4a0710;
+	}
+
+	.ribbon::before,
+	.ribbon::after {
+		content: '';
+		position: absolute;
+		top: 9px;
+		width: 34px;
+		height: 100%;
+		background: #8a0d1c;
+		z-index: -1;
+	}
+
+	.ribbon::before {
+		left: -24px;
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 34% 50%);
+	}
+
+	.ribbon::after {
+		right: -24px;
+		clip-path: polygon(0 0, 100% 0, 66% 50%, 100% 100%, 0 100%);
 	}
 
 	/*Cards*/
 	.card {
 		position: absolute;
-		width: 150px;
-		height: 210px;
-		border-radius: 12px;
-		background: linear-gradient(160deg, #ffffff, var(--card) 40%, #ece2c8);
-		box-shadow: 0 14px 26px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(0, 0, 0, 0.08);
+		width: 124px;
+		height: 174px;
+		border-radius: 10px;
+		background: linear-gradient(155deg, #ffffff, var(--card) 45%, #e8ddc0);
+		box-shadow: 0 12px 22px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.2);
 		color: var(--black);
 	}
 
@@ -63,23 +170,23 @@
 
 	.card .corner {
 		position: absolute;
-		top: 10px;
-		left: 12px;
+		top: 8px;
+		left: 9px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		font: 900 34px/0.9 'Cinzel', Georgia, serif;
+		font: 900 27px/0.9 'Cinzel', Georgia, serif;
 	}
 
 	.card .corner small {
-		font: 26px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
+		font: 21px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
 	}
 
 	.card .corner.flip {
 		top: auto;
 		left: auto;
-		bottom: 10px;
-		right: 12px;
+		bottom: 8px;
+		right: 9px;
 		transform: rotate(180deg);
 	}
 
@@ -88,32 +195,30 @@
 		inset: 0;
 		display: grid;
 		place-items: center;
-		font: 104px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
+		font: 84px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
 	}
 
-	.card .face {
+	/*A court card: a framed panel in red, gold and blue, with the rank large*/
+	.card .court {
 		position: absolute;
-		inset: 0;
+		inset: 26px 22px;
 		display: grid;
 		place-items: center;
-		font: 900 112px/1 'Cinzel', Georgia, serif;
-		text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+		border: 2px solid currentColor;
+		border-radius: 4px;
+		background: repeating-linear-gradient(45deg, rgba(240, 199, 87, 0.28) 0 4px, transparent 4px 9px), linear-gradient(180deg, rgba(31, 79, 170, 0.18), rgba(195, 22, 42, 0.14));
+		font: 900 74px/1 'Cinzel', Georgia, serif;
+		text-shadow: 2px 2px 0 rgba(240, 199, 87, 0.9);
 	}
 
 	/*Chips: ellipses seen from above at an angle, their edges stacked below*/
-	.stack {
-		position: absolute;
-		width: 112px;
-	}
-
 	.chip {
 		position: absolute;
-		left: 0;
-		width: 112px;
-		height: 50px;
+		width: 96px;
+		height: 42px;
 		border-radius: 50%;
-		background: radial-gradient(ellipse at center, #f6f1e2 0 31%, var(--c) 32% 39%, #f6f1e2 40% 42%, transparent 43%), repeating-conic-gradient(var(--c) 0 22deg, #f6f1e2 22deg 34deg, var(--c) 34deg 45deg);
-		box-shadow: 0 7px 0 var(--edge), 0 9px 6px rgba(0, 0, 0, 0.45), inset 0 0 0 2px rgba(0, 0, 0, 0.18);
+		background: radial-gradient(ellipse at center, #f6f1e2 0 30%, var(--c) 31% 39%, #f6f1e2 40% 42%, transparent 43%), repeating-conic-gradient(var(--c) 0 22deg, #f6f1e2 22deg 34deg, var(--c) 34deg 45deg);
+		box-shadow: 0 6px 0 var(--edge), 0 8px 6px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(0, 0, 0, 0.18);
 	}
 
 	.chip b {
@@ -122,348 +227,232 @@
 		display: grid;
 		place-items: center;
 		color: var(--c);
-		font: 900 26px/1 'Cinzel', Georgia, serif;
+		font: 900 22px/1 'Cinzel', Georgia, serif;
 		transform: scaleY(0.46);
 	}
 
-	.chip.green {
+	/*A chip lying flat toward us, face on*/
+	.chip.flat {
+		width: 74px;
+		height: 74px;
+		box-shadow: 0 4px 0 var(--edge), 0 8px 10px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(0, 0, 0, 0.18);
+	}
+
+	.chip.flat b {
+		transform: none;
+		font-size: 19px;
+	}
+
+	/*Three figures need a smaller face*/
+	.chip b.wide {
+		font-size: 14px;
+	}
+
+	.green {
 		--c: #1f8a4c;
 		--edge: #0f4d29;
 	}
 
-	.chip.red {
+	.red-chip {
 		--c: #c8202f;
 		--edge: #6d0f18;
 	}
 
-	.chip.black {
+	.black-chip {
 		--c: #26262b;
 		--edge: #0c0c0e;
 	}
 
-	.chip.blue {
-		--c: #1f5fc8;
-		--edge: #0f3272;
+	.purple {
+		--c: #6b2bb8;
+		--edge: #36145f;
 	}
 
-	.s98 {
+	/*A gold seal with a claim on it*/
+	.seal {
 		position: absolute;
-		width: 132px;
-		filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
-	}
-
-	/*Baccarat Simulator*/
-	#bs .spot {
-		position: absolute;
-		inset: 0;
-		background: radial-gradient(ellipse 45% 55% at 50% 30%, rgba(255, 255, 220, 0.22), transparent 70%), radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
-	}
-
-	/*The table's printed lines, in gold*/
-	#bs .table {
-		position: absolute;
-		inset: 0;
-	}
-
-	#bs .led {
-		position: absolute;
-		top: 16px;
-		right: 16px;
-		padding: 4px 12px 2px;
-		background: #031a07;
-		border: 2px solid #7a6a2a;
-		box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9), 0 3px 8px rgba(0, 0, 0, 0.5);
-		color: #4dff5a;
-		font: 34px/1 'VT323', monospace;
-		letter-spacing: 0.06em;
-		text-shadow: 0 0 8px rgba(77, 255, 90, 0.8);
-	}
-
-	#bs .title {
-		position: absolute;
-		top: 40px;
-		left: 50%;
-		width: 470px;
-		transform: translateX(-50%);
-		filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.55));
-	}
-
-	/*SIMULATOR, in 90s chrome: an extended face, a hard outline, and a metal gradient*/
-	#bs .sub {
-		position: absolute;
-		top: 182px;
-		left: 0;
-		right: 0;
-		text-align: center;
-		font: 44px/1 'Michroma', sans-serif;
-		letter-spacing: 0.08em;
-		transform: skewX(-10deg);
-	}
-
-	#bs .sub span {
-		background: linear-gradient(180deg, #ffffff 0%, #dfe3ec 42%, #6f7486 50%, #eef0f6 64%, #a7abba 100%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-		-webkit-text-stroke: 1.5px #101014;
-		filter: drop-shadow(3px 4px 0 #101014) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6));
-	}
-
-	#bs .burst {
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		width: 112px;
-		height: 112px;
-		transform: rotate(-14deg);
-		filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.55));
-	}
-
-	#bs .band {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		height: 46px;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 18px;
-		background: linear-gradient(180deg, #121214, #050506);
-		border-top: 2px solid var(--gold-2);
-		color: var(--gold-2);
-		font: 700 17px/1 'Cinzel', Georgia, serif;
-		letter-spacing: 0.18em;
-	}
-
-	#bs .band .s98 {
-		position: static;
-		width: 118px;
-	}
-
-	/*Just Baccarat*/
-
-	/*The burgundy header of its store art, with the gold-lined arc*/
-	#jb .crown {
-		position: absolute;
-		left: -40px;
-		right: -40px;
-		top: -260px;
-		height: 500px;
-		border-radius: 0 0 50% 50%;
-		background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 14px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 14px), radial-gradient(ellipse at 50% 85%, #7a1426, #4a0a16 55%, #2a050c);
-		box-shadow: 0 0 0 4px #2a050c, 0 0 0 7px var(--gold-2), 0 0 0 9px var(--gold-3), 0 14px 26px rgba(0, 0, 0, 0.7);
-	}
-
-	#jb .just,
-	#jb .bacc {
-		position: absolute;
-		left: 0;
-		right: 0;
-		text-align: center;
-		background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 45%, var(--gold-3) 70%, #f3d98a 100%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-		filter: drop-shadow(0 3px 0 #2a050c) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6));
-	}
-
-	#jb .just {
-		top: 26px;
-		font: 900 34px/1 'Cinzel', Georgia, serif;
-		letter-spacing: 0.5em;
-		padding-left: 0.5em;
-	}
-
-	#jb .bacc {
-		top: 68px;
-		font: 900 74px/1 'Cinzel', Georgia, serif;
-		letter-spacing: 0.04em;
-	}
-
-	#jb .rule {
-		position: absolute;
-		top: 156px;
-		left: 50%;
-		width: 300px;
-		transform: translateX(-50%);
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		color: var(--gold-2);
-		font: 700 15px/1 'Cinzel', Georgia, serif;
-		letter-spacing: 0.3em;
-		white-space: nowrap;
-	}
-
-	#jb .rule::before,
-	#jb .rule::after {
-		content: '';
-		flex: 1;
-		height: 1px;
-		background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
-	}
-
-	/*The scoreboard: a bead plate of Banker and Player wins*/
-	#jb .beads {
-		position: absolute;
-		left: 26px;
-		top: 262px;
-		display: grid;
-		grid-template-columns: repeat(4, 26px);
-		gap: 6px;
-		padding: 9px;
-		background: rgba(0, 0, 0, 0.35);
-		border: 1px solid rgba(233, 194, 90, 0.5);
-		border-radius: 6px;
-	}
-
-	#jb .beads i {
-		width: 26px;
-		height: 26px;
+		width: 104px;
+		height: 104px;
 		display: grid;
 		place-items: center;
-		border-radius: 6px;
-		color: #ffffff;
-		font: 900 15px/1  'Cinzel', Georgia, serif;
-		font-style: normal;
-		box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.3);
-	}
-
-	#jb .beads .b {
-		background: #c8202f;
-	}
-
-	#jb .beads .p {
-		background: #1f6fe0;
-	}
-
-	#jb .beads .e {
-		background: transparent;
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-	}
-
-	#jb .plaque {
-		position: absolute;
-		top: 186px;
-		left: 0;
-		right: 0;
-		color: var(--gold-1);
-		font: 700 12px/1 'Cinzel', Georgia, serif;
-		letter-spacing: 0.32em;
+		border-radius: 50%;
+		background: radial-gradient(circle at 35% 30%, var(--gold-1), var(--gold-2) 40%, var(--gold-3) 100%);
+		box-shadow: 0 0 0 3px var(--gold-4), 0 0 0 5px var(--gold-2), 0 8px 14px rgba(0, 0, 0, 0.6);
+		color: #3a1d02;
+		font: 900 14px/1.1 'Cinzel', Georgia, serif;
 		text-align: center;
-		opacity: 0.85;
+		letter-spacing: 0.04em;
+		z-index: 3;
 	}
 
-	#jb .s98 {
-		right: 18px;
-		bottom: 14px;
+	.seal big {
+		display: block;
+		font-size: 26px;
+	}
+
+	.burst {
+		position: absolute;
+		filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.55));
+		z-index: 3;
+	}
+
+	/*Baccarat Simulator: red velvet and gold*/
+	#bs {
+		background: radial-gradient(ellipse 75% 60% at 50% 32%, #b31c2e 0%, #6d0a17 45%, #2a0308 100%);
+	}
+
+	/*Just Baccarat: emerald, black and gold*/
+	#jb {
+		background: radial-gradient(ellipse 75% 60% at 50% 32%, #12814a 0%, #07472a 45%, #01170c 100%);
+	}
+
+	/*Its features, on a black and gold panel*/
+	.features {
+		position: absolute;
+		padding: 10px 14px 10px 12px;
+		background: linear-gradient(180deg, rgba(10, 10, 12, 0.92), rgba(30, 24, 10, 0.92));
+		border: 2px solid var(--gold-2);
+		border-radius: 6px;
+		box-shadow: 0 8px 14px rgba(0, 0, 0, 0.6);
+		color: var(--gold-1);
+		font: 700 13px/1.55 'Cinzel', Georgia, serif;
+		letter-spacing: 0.03em;
+		z-index: 3;
+	}
+
+	.features div::before {
+		content: '\2726  ';
+		color: var(--gold-2);
 	}
 </style>
 </head>
 <body>
 
-<!--Baccarat Simulator: the game's own table, its script logo, chrome SIMULATOR, an LED credit meter and a starburst-->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+	<defs>
+		<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#fff8d6"/>
+			<stop offset="0.35" stop-color="#f6d06a"/>
+			<stop offset="0.55" stop-color="#b47a16"/>
+			<stop offset="0.75" stop-color="#f3c95c"/>
+			<stop offset="1" stop-color="#8a5a0c"/>
+		</linearGradient>
+		<filter id="glow" x="-20%" y="-40%" width="140%" height="180%">
+			<feGaussianBlur stdDeviation="6" result="blur"/>
+			<feFlood flood-color="#ffd98a" flood-opacity="0.55"/>
+			<feComposite in2="blur" operator="in" result="halo"/>
+			<feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge>
+		</filter>
+		<path id="arch" d="M 40 150 Q 315 40 590 150"/>
+	</defs>
+</svg>
+
+<!--Baccarat Simulator-->
 <div class="cover" id="bs">
-	<div class="felt"></div>
-	<svg class="table" viewBox="0 0 630 500" aria-hidden="true">
-		<g fill="none" stroke="#e9c25a" stroke-opacity="0.55" stroke-width="2">
-			<path d="M -20 470 Q 315 250 650 470"/>
-			<path d="M -20 520 Q 315 300 650 520"/>
-		</g>
-		<g fill="#e9c25a" fill-opacity="0.6" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="18" letter-spacing="6" text-anchor="middle">
-			<text x="130" y="432" transform="rotate(-17 130 432)">PLAYER</text>
-			<text x="500" y="432" transform="rotate(17 500 432)">BANKER</text>
+	<div class="rays"></div>
+	<div class="bokeh"></div>
+	<div class="strip"><span>MOBILE &nbsp;·&nbsp; CARD GAME</span><img src="../assets/logo.webp" alt=""></div>
+
+	<!--The title: gold capitals on an arch, extruded in darker gold, with a glow-->
+	<svg class="title" viewBox="0 0 630 190" aria-hidden="true">
+		<g font-family="Cinzel, Georgia, serif" font-weight="900" font-size="92" letter-spacing="2" text-anchor="middle">
+			<text fill="#3a1d02" transform="translate(0 7)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="#5a3606" transform="translate(0 5)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="#7d4c0a" transform="translate(0 3)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="url(#gold)" stroke="#4a2a04" stroke-width="3" paint-order="stroke" stroke-linejoin="round" filter="url(#glow)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
 		</g>
 	</svg>
-	<div class="spot"></div>
-	<div class="led">$ 1000</div>
-	<img class="title" src="baccarat-logo.png" alt="">
-	<div class="sub"><span>SIMULATOR</span></div>
-	<svg class="burst" viewBox="-64 -64 128 128" aria-hidden="true">
-		<polygon id="burst-shape" fill="#ffd400" stroke="#b30f1c" stroke-width="3"/>
-		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="17" fill="#b30f1c" y="-4">NO</text>
-		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="27" fill="#b30f1c" y="24">BS!</text>
+	<div class="glint" style="left:520px;top:92px"></div>
+	<div class="glint" style="left:118px;top:150px;transform:scale(0.6)"></div>
+	<div class="ribbon" style="top:186px"><div class="band">SIMULATOR</div></div>
+
+	<div class="chip green" style="left:44px;top:428px"></div>
+	<div class="chip green" style="left:44px;top:420px"></div>
+	<div class="chip green" style="left:44px;top:412px"><b>25</b></div>
+	<div class="chip black-chip" style="left:120px;top:440px"></div>
+	<div class="chip black-chip" style="left:120px;top:432px"><b>100</b></div>
+	<div class="chip flat red-chip" style="left:470px;top:410px;transform:rotate(-12deg)"><b>5</b></div>
+	<div class="chip flat purple" style="left:530px;top:380px;transform:rotate(18deg)"><b class="wide">500</b></div>
+
+	<div class="card" style="left:168px;top:280px;transform:rotate(-22deg)">
+		<div class="corner">A<small>♠&#xFE0E;</small></div><div class="pip">♠&#xFE0E;</div><div class="corner flip">A<small>♠&#xFE0E;</small></div>
+	</div>
+	<div class="card red" style="left:232px;top:258px;transform:rotate(-8deg)">
+		<div class="corner">K<small>♥&#xFE0E;</small></div><div class="court">K</div><div class="corner flip">K<small>♥&#xFE0E;</small></div>
+	</div>
+	<div class="card" style="left:300px;top:256px;transform:rotate(7deg)">
+		<div class="corner">9<small>♣&#xFE0E;</small></div><div class="pip">♣&#xFE0E;</div><div class="corner flip">9<small>♣&#xFE0E;</small></div>
+	</div>
+	<div class="card red" style="left:366px;top:276px;transform:rotate(21deg)">
+		<div class="corner">Q<small>♦&#xFE0E;</small></div><div class="court">Q</div><div class="corner flip">Q<small>♦&#xFE0E;</small></div>
+	</div>
+	<div class="glint" style="left:346px;top:262px;transform:scale(0.8)"></div>
+
+	<div class="seal" style="left:22px;top:262px;transform:rotate(-10deg)"><span>TIE PAYS<big>8 TO 1</big></span></div>
+	<svg class="burst" style="left:500px;top:236px;width:116px;height:116px;transform:rotate(12deg)" viewBox="-64 -64 128 128" aria-hidden="true">
+		<polygon class="star" fill="#ffd400" stroke="#8a0d1c" stroke-width="3"/>
+		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="16" fill="#8a0d1c" y="-4">NO</text>
+		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="26" fill="#8a0d1c" y="23">BS!</text>
 	</svg>
-
-	<div class="stack" style="left:70px;top:330px">
-		<div class="chip black" style="top:36px"></div>
-		<div class="chip black" style="top:27px"></div>
-		<div class="chip red" style="top:18px"></div>
-		<div class="chip red" style="top:9px"></div>
-		<div class="chip red" style="top:0"><b>5</b></div>
-	</div>
-	<div class="stack" style="left:150px;top:350px">
-		<div class="chip green" style="top:18px"></div>
-		<div class="chip green" style="top:9px"></div>
-		<div class="chip green" style="top:0"><b>25</b></div>
-	</div>
-
-	<div class="card" style="left:290px;top:252px;transform:rotate(-12deg)">
-		<div class="corner">K<small>♠&#xFE0E;</small></div>
-		<div class="face">K</div>
-		<div class="corner flip">K<small>♠&#xFE0E;</small></div>
-	</div>
-	<div class="card red" style="left:400px;top:238px;transform:rotate(9deg)">
-		<div class="corner">9<small>♥&#xFE0E;</small></div>
-		<div class="pip">♥&#xFE0E;</div>
-		<div class="corner flip">9<small>♥&#xFE0E;</small></div>
-	</div>
-
-	<div class="band"><span>TIE PAYS 8 TO 1</span><img class="s98" src="../assets/logo.webp" alt=""></div>
 </div>
 
-<!--Just Baccarat: its burgundy and gold, the felt, its K and 9, chips and the bead plate-->
+<!--Just Baccarat-->
 <div class="cover" id="jb">
-	<div class="felt"></div>
-	<div class="crown"></div>
-	<div class="just">JUST</div>
-	<div class="bacc">BACCARAT</div>
-	<div class="rule">PUNTO BANCO</div>
+	<div class="rays"></div>
+	<div class="bokeh"></div>
+	<div class="strip"><span>MOBILE &nbsp;·&nbsp; CARD GAME</span><img src="../assets/logo.webp" alt=""></div>
 
-	<div class="beads">
-		<i class="b">B</i><i class="p">P</i><i class="b">B</i><i class="b">B</i>
-		<i class="b">B</i><i class="p">P</i><i class="p">P</i><i class="e"></i>
-		<i class="b">B</i><i class="e"></i><i class="p">P</i><i class="e"></i>
-	</div>
+	<div class="ribbon" style="top:44px"><div class="band" style="font-size:20px;padding:6px 30px 5px">JUST</div></div>
+	<svg class="title" style="top:44px" viewBox="0 0 630 190" aria-hidden="true">
+		<g font-family="Cinzel, Georgia, serif" font-weight="900" font-size="92" letter-spacing="2" text-anchor="middle">
+			<text fill="#1f1202" transform="translate(0 7)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="#5a3606" transform="translate(0 5)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="#7d4c0a" transform="translate(0 3)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+			<text fill="url(#gold)" stroke="#3a2003" stroke-width="3" paint-order="stroke" stroke-linejoin="round" filter="url(#glow)"><textPath href="#arch" startOffset="50%">BACCARAT</textPath></text>
+		</g>
+	</svg>
+	<div class="glint" style="left:110px;top:160px"></div>
+	<div class="glint" style="left:508px;top:132px;transform:scale(0.7)"></div>
 
-	<div class="stack" style="left:40px;top:395px">
-		<div class="chip green" style="top:27px"></div>
-		<div class="chip green" style="top:18px"></div>
-		<div class="chip green" style="top:9px"></div>
-		<div class="chip green" style="top:0"><b>25</b></div>
-	</div>
-	<div class="stack" style="left:120px;top:415px">
-		<div class="chip red" style="top:9px"></div>
-		<div class="chip red" style="top:0"><b>5</b></div>
-	</div>
-
-	<div class="card red" style="left:250px;top:250px;transform:rotate(-14deg)">
-		<div class="corner">K<small>♥&#xFE0E;</small></div>
-		<div class="face">K</div>
-		<div class="corner flip">K<small>♥&#xFE0E;</small></div>
-	</div>
-	<div class="card" style="left:362px;top:236px;transform:rotate(8deg)">
-		<div class="corner">9<small>♣&#xFE0E;</small></div>
-		<div class="pip">♣&#xFE0E;</div>
-		<div class="corner flip">9<small>♣&#xFE0E;</small></div>
+	<div class="features" style="left:22px;top:250px">
+		<div>Punto Banco rules</div>
+		<div>Pair bets</div>
+		<div>Bead Plate &amp; Big Road</div>
+		<div>Plays offline</div>
 	</div>
 
-	<div class="plaque">PLAYS OFFLINE</div>
-	<img class="s98" src="../assets/logo.webp" alt="">
+	<div class="card red" style="left:268px;top:262px;transform:rotate(-14deg)">
+		<div class="corner">K<small>♥&#xFE0E;</small></div><div class="court">K</div><div class="corner flip">K<small>♥&#xFE0E;</small></div>
+	</div>
+	<div class="card" style="left:350px;top:250px;transform:rotate(6deg)">
+		<div class="corner">9<small>♣&#xFE0E;</small></div><div class="pip">♣&#xFE0E;</div><div class="corner flip">9<small>♣&#xFE0E;</small></div>
+	</div>
+	<div class="glint" style="left:452px;top:262px;transform:scale(0.8)"></div>
+
+	<div class="chip red-chip" style="left:500px;top:444px"></div>
+	<div class="chip red-chip" style="left:500px;top:436px"></div>
+	<div class="chip red-chip" style="left:500px;top:428px"><b>5</b></div>
+	<div class="chip green" style="left:516px;top:396px"></div>
+	<div class="chip green" style="left:516px;top:388px"></div>
+	<div class="chip green" style="left:516px;top:380px"></div>
+	<div class="chip green" style="left:516px;top:372px"><b>25</b></div>
+	<div class="chip flat black-chip" style="left:200px;top:420px;transform:rotate(-14deg)"><b class="wide">100</b></div>
+	<div class="chip flat purple" style="left:120px;top:432px;transform:rotate(10deg)"><b class="wide">500</b></div>
 </div>
 
 <script>
-	//The starburst's points
-	const points = [];
+	//The starbursts' points
+	for (const star of document.querySelectorAll('.star')) {
+		const points = [];
 
-	for (let i = 0; i < 32; i++) {
-		const radius = i % 2 ? 46 : 62;
-		const angle = i / 32 * Math.PI * 2;
-		points.push(`${(Math.cos(angle) * radius).toFixed(1)},${(Math.sin(angle) * radius).toFixed(1)}`);
+		for (let i = 0; i < 32; i++) {
+			const radius = i % 2 ? 46 : 62;
+			const angle = i / 32 * Math.PI * 2;
+			points.push(`${(Math.cos(angle) * radius).toFixed(1)},${(Math.sin(angle) * radius).toFixed(1)}`);
+		}
+
+		star.setAttribute('points',points.join(' '));
 	}
-
-	document.getElementById('burst-shape').setAttribute('points',points.join(' '));
 </script>
 </body>
 </html>
