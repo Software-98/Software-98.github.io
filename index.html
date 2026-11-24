@@ -2,89 +2,488 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Software-98</title>
-<meta name="description" content="Software-98, maker of FoodTrax: grocery lists, budgets and calorie tracking for Android.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Software 98</title>
+<meta name="description" content="Software 98: PC games with a late-90s soul, and apps for everyday life, including FoodTrax for Android.">
+<meta name="theme-color" content="#008080">
+<meta property="og:title" content="Software 98">
+<meta property="og:description" content="PC games with a late-90s soul. Apps for everyday life.">
+<meta property="og:image" content="https://software-98.github.io/assets/og.png">
+<meta property="og:url" content="https://software-98.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=VT323&display=swap">
 <style>
+	/*The late-90s desktop: teal, beveled gray windows, a navy title bar, the logo's spectrum*/
 	:root {
-		--bg: #f4f6f3;
-		--surface: #ffffff;
-		--text: #16201a;
-		--muted: #56635b;
-		--line: #dde3dc;
-		--accent: #22794a;
+		--desktop: #008080;
+		--face: #c0c0c0;
+		--light: #ffffff;
+		--hilite: #dfdfdf;
+		--shadow: #808080;
+		--dark: #0a0a0a;
+		--ink: #000000;
+		--muted: #333333;
+		--title-from: #000080;
+		--title-to: #1084d0;
+		--paper: #ffffff;
+		--link: #0000ee;
+		--bar-h: 44px;
+		--raised: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px var(--hilite);
+		--pressed: inset 1px 1px var(--dark), inset -1px -1px var(--light), inset 2px 2px var(--shadow), inset -2px -2px var(--hilite);
+		--sunk: inset 1px 1px var(--shadow), inset -1px -1px var(--light), inset 2px 2px var(--dark), inset -2px -2px var(--hilite);
+		--wide: 'Michroma', 'Eurostile', 'Arial Black', sans-serif;
+		--pixel: 'VT323', 'Courier New', monospace;
+		--text: Verdana, Tahoma, 'Segoe UI', sans-serif;
 		color-scheme: light;
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:root {
-			--bg: #121614;
-			--surface: #1b211e;
-			--text: #e6ece7;
-			--muted: #9aa69e;
-			--line: #2e3631;
-			--accent: #5cc98a;
-			color-scheme: dark;
-		}
 	}
 
 	* {
 		box-sizing: border-box;
 	}
 
+	html {
+		scroll-behavior: smooth;
+	}
+
 	body {
 		margin: 0;
-		background: var(--bg);
-		color: var(--text);
-		font: 17px/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-	}
-
-	main {
-		max-width: 640px;
-		margin: 0 auto;
-		padding: 48px 16px;
-	}
-
-	.card {
-		background: var(--surface);
-		border: 1px solid var(--line);
-		border-radius: 16px;
-		padding: 24px;
-	}
-
-	h1 {
-		margin: 0 0 4px;
-		font-size: 1.9rem;
-	}
-
-	h2 {
-		margin: 0 0 8px;
-	}
-
-	p {
-		margin: 0 0 16px;
-	}
-
-	.muted {
-		color: var(--muted);
+		min-height: 100vh;
+		background-color: var(--desktop);
+		background-image: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.16), transparent 60%), repeating-conic-gradient(rgba(0, 0, 0, 0.05) 0 25%, transparent 0 50%);
+		background-size: 100% 100%, 4px 4px;
+		color: var(--ink);
+		font: 15px/1.6 var(--text);
+		padding-bottom: calc(var(--bar-h) + 40px + env(safe-area-inset-bottom, 0px));
 	}
 
 	a {
-		color: var(--accent);
-		font-weight: 600;
+		color: var(--link);
+	}
+
+	:focus-visible {
+		outline: 1px dotted var(--ink);
+		outline-offset: 2px;
+	}
+
+	/*Hero*/
+	.hero {
+		position: relative;
+		padding: 56px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px));
+		text-align: center;
+		overflow: hidden;
+	}
+
+	/*Faint CRT scan lines over the hero, as on the logo's chrome*/
+	.hero::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 3px);
+		pointer-events: none;
+	}
+
+	.hero h1 {
+		margin: 0;
+	}
+
+	.logo {
+		display: block;
+		width: min(760px, 100%);
+		height: auto;
+		margin: 0 auto;
+		filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.35));
+	}
+
+	.tagline {
+		margin: 22px 0 0;
+		color: #ffffff;
+		font: 28px/1.15 var(--pixel);
+		letter-spacing: 0.02em;
+		text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55);
+		text-wrap: balance;
+	}
+
+	/*The spectrum from the logo's ellipse, edge to edge*/
+	.spectrum {
+		height: 10px;
+		background: linear-gradient(90deg, #58d23f 0 12.5%, #20d0c8 12.5% 25%, #2f7dff 25% 37.5%, #8a4dff 37.5% 50%, #e23ad0 50% 62.5%, #ff3a2e 62.5% 75%, #ff8a00 75% 87.5%, #ffd400 87.5% 100%);
+		box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+	}
+
+	/*Windows*/
+	main {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: start;
+		gap: 28px;
+		max-width: 900px;
+		margin: 40px auto 0;
+		padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+	}
+
+	.window.span {
+		grid-column: 1 / -1;
+	}
+
+	@media (max-width: 720px) {
+		main {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.window {
+		min-width: 0;
+		padding: 3px;
+		background: var(--face);
+		box-shadow: var(--raised), 6px 6px 0 rgba(0, 0, 0, 0.25);
+	}
+
+	.title-bar {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		min-height: 26px;
+		padding: 2px 3px 2px 5px;
+		background: linear-gradient(90deg, var(--title-from), var(--title-to));
+		color: #ffffff;
+	}
+
+	.title-bar h2 {
+		flex: 1;
+		min-width: 0;
+		margin: 0;
+		font: bold 13px/1.2 var(--text);
+		letter-spacing: 0.02em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.title-bar img {
+		width: 18px;
+		height: 18px;
+	}
+
+	/*The minimise button folds the window to its title bar*/
+	.minimise {
+		display: grid;
+		place-items: end center;
+		width: 22px;
+		height: 20px;
+		padding: 0 0 4px;
+		border: 0;
+		background: var(--face);
+		box-shadow: var(--raised);
+		cursor: pointer;
+	}
+
+	.minimise::before {
+		content: '';
+		width: 8px;
+		height: 2px;
+		background: var(--ink);
+	}
+
+	.minimise[aria-expanded='false']::before {
+		width: 9px;
+		height: 8px;
+		margin-bottom: -1px;
+		border: 1px solid var(--ink);
+		border-top-width: 2px;
+		background: none;
+	}
+
+	.minimise:active {
+		box-shadow: var(--pressed);
+	}
+
+	.window-body {
+		padding: 16px 14px 14px;
+	}
+
+	.window-body p {
+		margin: 0 0 12px;
+	}
+
+	.window-body p:last-child {
+		margin-bottom: 0;
+	}
+
+	/*A sunken white field, for the program listings*/
+	.sunken {
+		padding: 18px;
+		background: var(--paper);
+		box-shadow: var(--sunk);
+	}
+
+	/*Programs*/
+	.program {
+		display: grid;
+		grid-template-columns: 112px 1fr;
+		gap: 20px;
+		align-items: start;
+	}
+
+	@media (max-width: 480px) {
+		.program {
+			grid-template-columns: 64px 1fr;
+			gap: 14px;
+			padding: 14px;
+		}
+	}
+
+	.program-icon {
+		width: 100%;
+		height: auto;
+		border-radius: 22%;
+		box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+	}
+
+	.program-info {
+		min-width: 0;
+	}
+
+	.program h3 {
+		margin: 0;
+		font: 22px/1.25 var(--wide);
+	}
+
+	.platform {
+		display: inline-block;
+		margin: 6px 0 10px;
+		padding: 0 6px;
+		background: var(--title-from);
+		color: #ffffff;
+		font: 18px/1.3 var(--pixel);
+		letter-spacing: 0.06em;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-top: 16px;
+	}
+
+	.button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 120px;
+		min-height: 36px;
+		padding: 4px 16px;
+		background: var(--face);
+		color: var(--ink);
+		font: bold 14px/1.2 var(--text);
+		text-decoration: none;
+		box-shadow: var(--raised);
+	}
+
+	/*The default button of a dialog, ringed in black*/
+	.button.default {
+		outline: 1px solid var(--ink);
+	}
+
+	.button:active {
+		box-shadow: var(--pressed);
+		padding: 5px 15px 3px 17px;
+	}
+
+	.button:focus-visible {
+		outline: 1px dotted var(--ink);
+		outline-offset: -5px;
+	}
+
+	/*Games: the catalogue, still installing*/
+	.progress {
+		display: flex;
+		gap: 2px;
+		height: 24px;
+		margin: 14px 0 8px;
+		padding: 3px;
+		background: var(--paper);
+		box-shadow: var(--sunk);
+		overflow: hidden;
+	}
+
+	.progress span {
+		flex: 0 0 10px;
+		background: var(--title-from);
+	}
+
+	.status {
+		color: var(--muted);
+		font: 19px/1.2 var(--pixel);
+	}
+
+	.address {
+		font: 21px/1.2 var(--pixel);
+		overflow-wrap: anywhere;
+	}
+
+	/*Taskbar*/
+	.taskbar {
+		position: fixed;
+		inset: auto 0 0;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-height: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px));
+		padding: 4px max(6px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
+		background: var(--face);
+		box-shadow: inset 0 1px var(--hilite), inset 0 2px var(--light);
+	}
+
+	.taskbar .button {
+		gap: 6px;
+		min-width: 0;
+		min-height: 34px;
+		padding: 2px 10px 2px 6px;
+		font-size: 13px;
+	}
+
+	.taskbar .button img {
+		width: 22px;
+		height: 22px;
+	}
+
+	.copyright {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		color: var(--muted);
+		font-size: 12px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.tray {
+		display: flex;
+		align-items: center;
+		min-height: 34px;
+		padding: 0 12px;
+		font: 20px/1 var(--pixel);
+		box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--light);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
 	}
 </style>
 </head>
 <body>
+<header class="hero" id="top">
+	<h1><img class="logo" src="assets/logo.webp" width="962" height="222" alt="Software 98"></h1>
+	<p class="tagline">PC games with a late-90s soul. Apps for everyday life.</p>
+</header>
+<div class="spectrum" aria-hidden="true"></div>
+
 <main>
-	<h1>Software-98</h1>
-	<p class="muted">Small apps that do one job well.</p>
-	<div class="card">
-		<h2>FoodTrax</h2>
-		<p>Grocery lists, a monthly food budget and calorie tracking in one Android app. Scan barcodes, keep kits of items you buy often, and share a list live with your household.</p>
-		<p><a href="https://play.google.com/store/apps/details?id=com.software98.foodtrax">Get it on Google Play</a></p>
-		<p><a href="https://software-98.github.io/foodtrax-privacy/">Privacy policy</a></p>
-	</div>
+	<section class="window span" aria-labelledby="apps-title">
+		<div class="title-bar">
+			<img src="favicon.png" alt="">
+			<h2 id="apps-title">Apps</h2>
+			<button class="minimise" type="button" aria-label="Minimise Apps" aria-expanded="true" aria-controls="apps-body"></button>
+		</div>
+		<div class="window-body" id="apps-body">
+			<article class="sunken program">
+				<img class="program-icon" src="assets/foodtrax-icon.png" width="192" height="192" alt="">
+				<div class="program-info">
+					<h3>FoodTrax</h3>
+					<span class="platform">ANDROID</span>
+					<p>Grocery lists that add up as you shop. Set a monthly food budget, scan barcodes, track calories, keep kits of the items you buy often, and share a list live with your household.</p>
+					<div class="actions">
+						<a class="button default" href="https://play.google.com/store/apps/details?id=com.software98.foodtrax">Get it on Google Play</a>
+						<a class="button" href="https://software-98.github.io/foodtrax-privacy/">Privacy policy</a>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<section class="window" aria-labelledby="games-title">
+		<div class="title-bar">
+			<img src="favicon.png" alt="">
+			<h2 id="games-title">Games</h2>
+			<button class="minimise" type="button" aria-label="Minimise Games" aria-expanded="true" aria-controls="games-body"></button>
+		</div>
+		<div class="window-body" id="games-body">
+			<p>PC games made in the spirit of the late 90s: CD-ROMs, big boxes and a fresh install on a Friday night.</p>
+			<div class="progress" id="progress" role="img" aria-label="The games catalogue is still installing"></div>
+			<p class="status">Copying catalogue… please do not turn off your computer.</p>
+		</div>
+	</section>
+
+	<section class="window" aria-labelledby="about-title">
+		<div class="title-bar">
+			<img src="favicon.png" alt="">
+			<h2 id="about-title">About</h2>
+			<button class="minimise" type="button" aria-label="Minimise About" aria-expanded="true" aria-controls="about-body"></button>
+		</div>
+		<div class="window-body" id="about-body">
+			<p>Software 98 is an independent studio. The games look back to the late 90s; the apps are modern, made to be useful every day.</p>
+			<p>Questions, bugs or ideas:</p>
+			<p class="address"><a href="mailto:Software1998@protonmail.com">Software1998@protonmail.com</a></p>
+		</div>
+	</section>
 </main>
+
+<footer class="taskbar">
+	<a class="button" href="#top"><img src="favicon.png" alt="">Software 98</a>
+	<span class="copyright">© <span id="year">2026</span> Software 98</span>
+	<time class="tray" id="clock"></time>
+</footer>
+
+<script>
+	//Minimise: each window folds to its title bar and back
+	for (const button of document.querySelectorAll('.minimise')) {
+		const name = button.getAttribute('aria-label').replace('Minimise ','');
+
+		button.addEventListener('click',() => {
+			const isOpen = button.getAttribute('aria-expanded') === 'true';
+			document.getElementById(button.getAttribute('aria-controls')).hidden = isOpen;
+			button.setAttribute('aria-expanded',String(!isOpen));
+			button.setAttribute('aria-label',`${isOpen ? 'Restore' : 'Minimise'} ${name}`);
+		});
+	}
+
+	//The games catalogue's progress bar: fills block by block to most of the way, waits, and starts over
+	const progress = document.getElementById('progress');
+	const BLOCK = 12;
+	const isStill = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	let filled = 0;
+
+	const getMostBlocks = () => Math.round(Math.floor((progress.clientWidth - 6) / BLOCK) * 0.85);
+	const showBlocks = (count) => progress.replaceChildren(...Array.from({length:count},() => document.createElement('span')));
+
+	if (isStill) {
+		showBlocks(getMostBlocks());
+	} else {
+		setInterval(() => {
+			const most = getMostBlocks();
+			filled = filled >= most + 6 ? 0 : filled + 1; // a few ticks' wait at the end before starting over
+			showBlocks(Math.min(filled,most));
+		},350);
+	}
+
+	//The tray clock, in the visitor's own time
+	const clock = document.getElementById('clock');
+	const showTime = () => {
+		const now = new Date();
+		clock.textContent = now.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+		clock.dateTime = now.toISOString();
+	};
+
+	showTime();
+	setInterval(showTime,10000);
+	document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
