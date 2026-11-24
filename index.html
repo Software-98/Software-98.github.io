@@ -597,7 +597,7 @@
 	}
 
 	/*Home video on VHS: a soft, warm, over-saturated picture, colour bleeding sideways, tape grain, the picture jumping now and then,
-	a tracking streak rolling through, the ragged head-switching noise along the bottom, and the camcorder's PLAY and date on screen*/
+	a tracking streak rolling through, and the ragged head-switching noise along the bottom*/
 	.vhs {
 		position: fixed;
 		inset: 0;
@@ -644,32 +644,6 @@
 		background-size: 300px 12px, 100% 100%;
 		opacity: 0.8;
 		animation: streak 0.15s steps(3) infinite, wobble 0.3s steps(2) infinite;
-	}
-
-	/*The camcorder's on-screen text*/
-	.vhs-osd {
-		position: absolute;
-		color: #ffffff;
-		font: 26px/1.05 var(--pixel);
-		letter-spacing: 0.06em;
-		text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8), -1px 0 rgba(255, 40, 90, 0.6), 1px 0 rgba(40, 210, 255, 0.6);
-		opacity: 0.85;
-	}
-
-	.vhs-play {
-		top: max(18px, env(safe-area-inset-top, 0px));
-		left: max(22px, env(safe-area-inset-left, 0px));
-	}
-
-	.vhs-play b {
-		font-weight: normal;
-		animation: blink 1.2s steps(1) infinite;
-	}
-
-	.vhs-date {
-		right: max(22px, env(safe-area-inset-right, 0px));
-		bottom: max(26px, env(safe-area-inset-bottom, 0px));
-		text-align: right;
 	}
 
 	/*Now and then the picture jumps sideways*/
@@ -723,12 +697,6 @@
 		}
 	}
 
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
-	}
-
 	@keyframes tracking {
 		0%,
 		70% {
@@ -748,12 +716,6 @@
 		text-shadow: -1.5px 0 rgba(255, 40, 90, 0.5), 2px 0 rgba(40, 210, 255, 0.45);
 	}
 
-	@media (max-width: 560px) {
-		.vhs-osd {
-			font-size: 20px;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		html {
 			scroll-behavior: auto;
@@ -763,7 +725,6 @@
 		.floor,
 		.vhs::before,
 		.vhs-foot,
-		.vhs-play b,
 		.hero,
 		main,
 		footer {
@@ -926,8 +887,6 @@
 </footer>
 
 <div class="vhs" aria-hidden="true">
-	<div class="vhs-osd vhs-play">PLAY <b>&#9654;</b></div>
-	<div class="vhs-osd vhs-date"><span id="vhs-time">PM 12:00</span><br><span id="vhs-day">NOV. 24 1998</span></div>
 	<div class="vhs-foot"></div>
 </div>
 
@@ -1178,17 +1137,6 @@
 
 	document.getElementById('year').textContent = new Date().getFullYear();
 
-	//The camcorder's date stamp: the visitor's day and time, in 1998
-	const MONTHS = ['JAN.','FEB.','MAR.','APR.','MAY','JUN.','JUL.','AUG.','SEP.','OCT.','NOV.','DEC.'];
-	const showStamp = () => {
-		const now = new Date();
-		const hour = now.getHours() % 12 || 12;
-		document.getElementById('vhs-time').textContent = `${now.getHours() < 12 ? 'AM' : 'PM'} ${hour}:${String(now.getMinutes()).padStart(2,'0')}`;
-		document.getElementById('vhs-day').textContent = `${MONTHS[now.getMonth()]} ${now.getDate()} 1998`;
-	};
-
-	showStamp();
-	setInterval(showStamp,15000);
 </script>
 </body>
 </html>
