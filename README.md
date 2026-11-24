@@ -9,7 +9,9 @@ https://software-98.github.io.
 - `index.html`: the site, one page. The logo is a solid drawn with WebGL
   (three.js r128): its exact outline, traced from the artwork into 164 points
   (`OUTLINE` in the page), extruded, with the artwork on its face and chrome
-  sides, the back printed to read the right way too. It turns slowly all the
+  sides, the back printed from `assets/logo-back.webp`: the artwork mirrored, so
+  its edges fit the outline from behind, with the lettering put back to read the
+  right way. It turns slowly all the
   way round, drawn at 70% resolution. Browsers without WebGL see
   the flat logo. Below it, shelves of cases, each a six-sided
   CSS 3D box (jewel cases for apps, portrait keep cases for PC games).

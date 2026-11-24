@@ -742,7 +742,6 @@
 
 		const UNIT = 100; // artwork pixels to a world unit
 		const DEPTH = 0.55;
-		const BACK = {centre:487,slant:0.15}; // the back's print: mirrored to read the right way, and re-slanted to fit the outline
 		const SCALE = 0.7; // drawn a little smaller than shown, so its pixels just show
 		const TURN = 18; // seconds for one full turn
 		const SHINE_EVERY = 5.5;
@@ -755,16 +754,21 @@
 		const resolution = {value:new THREE.Vector2(1,1)};
 		const CHROME = new THREE.Color(0.8,0.82,0.88);
 
-		new THREE.TextureLoader().load('assets/logo.webp',(texture) => {
+		//The back's print: the artwork mirrored, so its edges fit the outline seen from behind, with the lettering put back to read the right way
+		const loader = new THREE.TextureLoader();
+		const backTexture = loader.load('assets/logo-back.webp');
+
+		loader.load('assets/logo.webp',(texture) => {
 			texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+			backTexture.anisotropy = texture.anisotropy;
 
 			//The face: the artwork, lit a little, with a band of light passing over it
 			const face = new THREE.ShaderMaterial({
 				uniforms:{
 					uTex:{value:texture},
+					uBackTex:{value:backTexture},
 					uArt:{value:new THREE.Vector2(width,height)},
 					uUnit:{value:UNIT},
-					uBack:{value:new THREE.Vector2(BACK.centre,BACK.slant)},
 					uEdge:{value:CHROME},
 					uShine:shine,
 					uRes:resolution,
@@ -772,32 +776,34 @@
 				vertexShader:`
 					uniform vec2 uArt;
 					uniform float uUnit;
-					uniform vec2 uBack;
 					varying vec2 vUv;
+					varying float vBack;
 					varying vec3 vNormal;
 
 					void main() {
-						vec2 pixel = vec2(position.x * uUnit + uArt.x * 0.5, uArt.y * 0.5 - position.y * uUnit); // where on the artwork, in its pixels
+						vUv = vec2(position.x * uUnit / uArt.x + 0.5, position.y * uUnit / uArt.y + 0.5);
+						vBack = normal.z < 0.0 ? 1.0 : 0.0;
 
-						if (normal.z < 0.0) {
-							pixel.x = 2.0 * uBack.x - pixel.x + 2.0 * uBack.y * (uArt.y * 0.5 - pixel.y); // the back: mirrored, then slanted back
+						if (vBack > 0.5) {
+							vUv.x = 1.0 - vUv.x; // the back print is mirrored, so this lines it up with the outline
 						}
 
-						vUv = vec2(pixel.x / uArt.x, 1.0 - pixel.y / uArt.y);
 						vNormal = normalize(normalMatrix * normal);
 						gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 					}
 				`,
 				fragmentShader:`
 					uniform sampler2D uTex;
+					uniform sampler2D uBackTex;
 					uniform vec3 uEdge;
 					uniform float uShine;
 					uniform vec2 uRes;
 					varying vec2 vUv;
+					varying float vBack;
 					varying vec3 vNormal;
 
 					void main() {
-						vec4 texel = texture2D(uTex, vUv);
+						vec4 texel = vBack > 0.5 ? texture2D(uBackTex, vUv) : texture2D(uTex, vUv);
 						vec3 colour = mix(uEdge, texel.rgb, texel.a);
 						colour *= 0.86 + 0.18 * max(dot(normalize(vNormal), normalize(vec3(-0.3, 0.4, 1.0))), 0.0);
 						float across = gl_FragCoord.x / uRes.x + gl_FragCoord.y / uRes.y * 0.35;
