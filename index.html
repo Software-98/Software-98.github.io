@@ -152,6 +152,7 @@
 		width: 100%;
 		height: auto;
 		aspect-ratio: 860 / 320;
+		image-rendering: pixelated;
 	}
 
 	/*Its shadow on the floor*/
@@ -721,9 +722,8 @@
 	//The logo's outline, traced from the artwork (962 x 222 px): the solid is this shape, extruded
 	const OUTLINE = {size:[962,222],points:[[473.5,0.5],[534.5,0.5],[535.5,1.5],[571.5,2.5],[572.5,3.5],[583.5,3.5],[584.5,4.5],[594.5,4.5],[595.5,5.5],[612.5,6.5],[613.5,7.5],[619.5,7.5],[620.5,8.5],[626.5,8.5],[627.5,9.5],[633.5,9.5],[634.5,10.5],[651.5,12.5],[652.5,13.5],[656.5,13.5],[657.5,14.5],[661.5,14.5],[662.5,15.5],[666.5,15.5],[667.5,16.5],[671.5,16.5],[680.5,19.5],[692.5,21.5],[733.5,34.5],[762.5,47.5],[785.5,62.5],[957.5,62.5],[959.5,63.5],[961.5,66.5],[960.5,67.5],[960.5,73.5],[958.5,80.5],[958.5,86.5],[957.5,87.5],[957.5,93.5],[955.5,100.5],[955.5,106.5],[954.5,107.5],[954.5,113.5],[953.5,114.5],[953.5,120.5],[952.5,121.5],[948.5,150.5],[941.5,158.5],[935.5,161.5],[932.5,162.5],[766.5,162.5],[746.5,173.5],[744.5,173.5],[737.5,177.5],[735.5,177.5],[722.5,183.5],[717.5,184.5],[714.5,186.5],[702.5,190.5],[699.5,190.5],[692.5,193.5],[689.5,193.5],[685.5,195.5],[678.5,196.5],[674.5,198.5],[662.5,200.5],[653.5,203.5],[629.5,207.5],[628.5,208.5],[623.5,208.5],[622.5,209.5],[617.5,209.5],[610.5,211.5],[604.5,211.5],[597.5,213.5],[573.5,215.5],[572.5,216.5],[564.5,216.5],[563.5,217.5],[553.5,217.5],[552.5,218.5],[541.5,218.5],[540.5,219.5],[503.5,220.5],[502.5,221.5],[441.5,221.5],[440.5,220.5],[419.5,220.5],[418.5,219.5],[404.5,219.5],[403.5,218.5],[391.5,218.5],[390.5,217.5],[371.5,216.5],[370.5,215.5],[363.5,215.5],[362.5,214.5],[356.5,214.5],[355.5,213.5],[349.5,213.5],[348.5,212.5],[342.5,212.5],[341.5,211.5],[324.5,209.5],[323.5,208.5],[304.5,205.5],[299.5,203.5],[295.5,203.5],[294.5,202.5],[279.5,199.5],[275.5,197.5],[272.5,197.5],[265.5,194.5],[262.5,194.5],[239.5,186.5],[211.5,173.5],[194.5,162.5],[3.5,162.5],[1.5,161.5],[0.5,159.5],[2.5,140.5],[4.5,133.5],[4.5,127.5],[5.5,126.5],[5.5,120.5],[7.5,113.5],[7.5,107.5],[8.5,106.5],[8.5,100.5],[9.5,99.5],[12.5,76.5],[14.5,72.5],[21.5,65.5],[25.5,63.5],[28.5,63.5],[29.5,62.5],[204.5,62.5],[217.5,54.5],[250.5,39.5],[283.5,28.5],[286.5,28.5],[297.5,24.5],[300.5,24.5],[309.5,21.5],[313.5,21.5],[322.5,18.5],[326.5,18.5],[327.5,17.5],[331.5,17.5],[332.5,16.5],[336.5,16.5],[337.5,15.5],[341.5,15.5],[347.5,13.5],[370.5,10.5],[371.5,9.5],[401.5,6.5],[402.5,5.5],[434.5,3.5],[435.5,2.5],[450.5,2.5],[451.5,1.5],[472.5,1.5]]};
 
-	//The logo as a solid: its outline extruded, the artwork printed on its face, chrome on its sides.
-	//It turns slowly and always shows its face: at each edge-on moment it carries on from the other edge,
-	//so the back, which would show the artwork mirrored, never turns to the front
+	//The logo as a solid: its outline extruded, the artwork printed on its face and its back, chrome on its sides.
+	//It turns slowly, all the way round
 	const startLogo = () => {
 		const canvas = document.getElementById('logo-gl');
 		const flat = document.getElementById('logo-flat');
@@ -742,6 +742,8 @@
 
 		const UNIT = 100; // artwork pixels to a world unit
 		const DEPTH = 0.55;
+		const BACK = {centre:487,slant:0.15}; // the back's print: mirrored to read the right way, and re-slanted to fit the outline
+		const SCALE = 0.7; // drawn a little smaller than shown, so its pixels just show
 		const TURN = 18; // seconds for one full turn
 		const SHINE_EVERY = 5.5;
 		const [width,height] = OUTLINE.size;
@@ -760,20 +762,28 @@
 			const face = new THREE.ShaderMaterial({
 				uniforms:{
 					uTex:{value:texture},
-					uMin:{value:new THREE.Vector2(-width / 2 / UNIT,-height / 2 / UNIT)},
-					uSize:{value:new THREE.Vector2(width / UNIT,height / UNIT)},
+					uArt:{value:new THREE.Vector2(width,height)},
+					uUnit:{value:UNIT},
+					uBack:{value:new THREE.Vector2(BACK.centre,BACK.slant)},
 					uEdge:{value:CHROME},
 					uShine:shine,
 					uRes:resolution,
 				},
 				vertexShader:`
-					uniform vec2 uMin;
-					uniform vec2 uSize;
+					uniform vec2 uArt;
+					uniform float uUnit;
+					uniform vec2 uBack;
 					varying vec2 vUv;
 					varying vec3 vNormal;
 
 					void main() {
-						vUv = (position.xy - uMin) / uSize;
+						vec2 pixel = vec2(position.x * uUnit + uArt.x * 0.5, uArt.y * 0.5 - position.y * uUnit); // where on the artwork, in its pixels
+
+						if (normal.z < 0.0) {
+							pixel.x = 2.0 * uBack.x - pixel.x + 2.0 * uBack.y * (uArt.y * 0.5 - pixel.y); // the back: mirrored, then slanted back
+						}
+
+						vUv = vec2(pixel.x / uArt.x, 1.0 - pixel.y / uArt.y);
 						vNormal = normalize(normalMatrix * normal);
 						gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 					}
@@ -811,19 +821,19 @@
 			fill.position.set(0,-1,2);
 			scene.add(fill);
 
-			//A long lens, nearly flat: edge-on, the logo looks the same from either end
+			//A long lens, so the logo keeps its shape as it turns
 			const camera = new THREE.PerspectiveCamera(10,860 / 320,1,100);
 			camera.position.set(0,0,24);
 
 			const fit = () => {
-				renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+				renderer.setPixelRatio(SCALE);
 				renderer.setSize(canvas.clientWidth,Math.round(canvas.clientWidth * 320 / 860),false);
 				renderer.getDrawingBufferSize(resolution.value);
 			};
 
 			const draw = (seconds) => {
 				const angle = seconds / TURN * Math.PI * 2;
-				logo.rotation.y = ((angle + Math.PI / 2) % Math.PI) - Math.PI / 2;
+				logo.rotation.y = angle;
 				logo.position.y = Math.sin(seconds * 0.8) * 0.05;
 				const phase = (seconds % SHINE_EVERY) / SHINE_EVERY;
 				shine.value = phase < 0.5 ? -1 : -0.3 + (phase - 0.5) / 0.4 * 1.9;
