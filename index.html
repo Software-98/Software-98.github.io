@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800&family=Michroma&family=VT323&display=swap">
 <style>
-	/*Software 98: a dark shelf of 3D cases under a low-poly chrome logo*/
+	/*Software 98: a dark shelf of 3D cases under the logo as a turning solid*/
 	:root {
 		--night: #07070b;
 		--night-2: #10101a;
@@ -116,7 +116,7 @@
 		padding-right: max(16px, env(safe-area-inset-right, 0px));
 	}
 
-	/*Hero: the logo as a low-poly 3D model, drawn as a 1998 console would draw it*/
+	/*Hero: the logo as a solid, turning slowly*/
 	.hero {
 		padding-top: 40px;
 		padding-bottom: 24px;
@@ -147,13 +147,11 @@
 		margin: 6% auto;
 	}
 
-	/*Drawn small and shown big, with hard pixel edges, as on a CRT in 1998*/
 	.logo-gl {
 		display: block;
 		width: 100%;
 		height: auto;
 		aspect-ratio: 860 / 320;
-		image-rendering: pixelated;
 	}
 
 	/*Its shadow on the floor*/
@@ -720,8 +718,12 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-	//The logo as a low-poly model, drawn as a 1998 console would: few polygons, vertices that snap to the pixel grid,
-	//textures that warp across them, flat shading in a few steps, and 15-bit colour with ordered dithering
+	//The logo's outline, traced from the artwork (962 x 222 px): the solid is this shape, extruded
+	const OUTLINE = {size:[962,222],points:[[473.5,0.5],[534.5,0.5],[535.5,1.5],[571.5,2.5],[572.5,3.5],[583.5,3.5],[584.5,4.5],[594.5,4.5],[595.5,5.5],[612.5,6.5],[613.5,7.5],[619.5,7.5],[620.5,8.5],[626.5,8.5],[627.5,9.5],[633.5,9.5],[634.5,10.5],[651.5,12.5],[652.5,13.5],[656.5,13.5],[657.5,14.5],[661.5,14.5],[662.5,15.5],[666.5,15.5],[667.5,16.5],[671.5,16.5],[680.5,19.5],[692.5,21.5],[733.5,34.5],[762.5,47.5],[785.5,62.5],[957.5,62.5],[959.5,63.5],[961.5,66.5],[960.5,67.5],[960.5,73.5],[958.5,80.5],[958.5,86.5],[957.5,87.5],[957.5,93.5],[955.5,100.5],[955.5,106.5],[954.5,107.5],[954.5,113.5],[953.5,114.5],[953.5,120.5],[952.5,121.5],[948.5,150.5],[941.5,158.5],[935.5,161.5],[932.5,162.5],[766.5,162.5],[746.5,173.5],[744.5,173.5],[737.5,177.5],[735.5,177.5],[722.5,183.5],[717.5,184.5],[714.5,186.5],[702.5,190.5],[699.5,190.5],[692.5,193.5],[689.5,193.5],[685.5,195.5],[678.5,196.5],[674.5,198.5],[662.5,200.5],[653.5,203.5],[629.5,207.5],[628.5,208.5],[623.5,208.5],[622.5,209.5],[617.5,209.5],[610.5,211.5],[604.5,211.5],[597.5,213.5],[573.5,215.5],[572.5,216.5],[564.5,216.5],[563.5,217.5],[553.5,217.5],[552.5,218.5],[541.5,218.5],[540.5,219.5],[503.5,220.5],[502.5,221.5],[441.5,221.5],[440.5,220.5],[419.5,220.5],[418.5,219.5],[404.5,219.5],[403.5,218.5],[391.5,218.5],[390.5,217.5],[371.5,216.5],[370.5,215.5],[363.5,215.5],[362.5,214.5],[356.5,214.5],[355.5,213.5],[349.5,213.5],[348.5,212.5],[342.5,212.5],[341.5,211.5],[324.5,209.5],[323.5,208.5],[304.5,205.5],[299.5,203.5],[295.5,203.5],[294.5,202.5],[279.5,199.5],[275.5,197.5],[272.5,197.5],[265.5,194.5],[262.5,194.5],[239.5,186.5],[211.5,173.5],[194.5,162.5],[3.5,162.5],[1.5,161.5],[0.5,159.5],[2.5,140.5],[4.5,133.5],[4.5,127.5],[5.5,126.5],[5.5,120.5],[7.5,113.5],[7.5,107.5],[8.5,106.5],[8.5,100.5],[9.5,99.5],[12.5,76.5],[14.5,72.5],[21.5,65.5],[25.5,63.5],[28.5,63.5],[29.5,62.5],[204.5,62.5],[217.5,54.5],[250.5,39.5],[283.5,28.5],[286.5,28.5],[297.5,24.5],[300.5,24.5],[309.5,21.5],[313.5,21.5],[322.5,18.5],[326.5,18.5],[327.5,17.5],[331.5,17.5],[332.5,16.5],[336.5,16.5],[337.5,15.5],[341.5,15.5],[347.5,13.5],[370.5,10.5],[371.5,9.5],[401.5,6.5],[402.5,5.5],[434.5,3.5],[435.5,2.5],[450.5,2.5],[451.5,1.5],[472.5,1.5]]};
+
+	//The logo as a solid: its outline extruded, the artwork printed on its face, chrome on its sides.
+	//It turns slowly and always shows its face: at each edge-on moment it carries on from the other edge,
+	//so the back, which would show the artwork mirrored, never turns to the front
 	const startLogo = () => {
 		const canvas = document.getElementById('logo-gl');
 		const flat = document.getElementById('logo-flat');
@@ -733,144 +735,98 @@
 		}
 
 		try {
-			renderer = new THREE.WebGLRenderer({canvas,antialias:false,alpha:true});
+			renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
 		} catch {
 			return;
 		}
 
-		//The logo's shapes in world units, measured from the artwork (962 x 222 px, 100 px to a unit, centred)
-		const SIZE = {x:9.62,y:2.22};
-		const ELLIPSE = {cx:0.06,rx:3.24,ry:1.12,shear:0.145,sides:22,depth:0.56};
-		const BAR = {points:[[-4.6,0.49],[4.83,0.49],[4.6,-0.56],[-4.84,-0.56]],depth:1.0};
+		const UNIT = 100; // artwork pixels to a world unit
+		const DEPTH = 0.55;
+		const TURN = 18; // seconds for one full turn
+		const SHINE_EVERY = 5.5;
+		const [width,height] = OUTLINE.size;
+		const shape = new THREE.Shape(OUTLINE.points.map(([x,y]) => new THREE.Vector2((x - width / 2) / UNIT,(height / 2 - y) / UNIT)));
+		const geometry = new THREE.ExtrudeGeometry(shape,{depth:DEPTH,bevelEnabled:false});
+		geometry.translate(0,0,-DEPTH / 2);
 
-		const getEllipse = () => {
-			const shape = new THREE.Shape();
-			const k = 1 / Math.cos(Math.PI / ELLIPSE.sides); // the polygon goes round the ellipse, not inside it
-
-			for (let i = 0; i < ELLIPSE.sides; i++) {
-				const a = i / ELLIPSE.sides * Math.PI * 2;
-				const y = Math.sin(a) * ELLIPSE.ry * k;
-				const x = ELLIPSE.cx + Math.cos(a) * ELLIPSE.rx * k + ELLIPSE.shear * y;
-				i === 0 ? shape.moveTo(x,y) : shape.lineTo(x,y);
-			}
-
-			return shape;
-		};
-
-		const getBar = () => new THREE.Shape(BAR.points.map(([x,y]) => new THREE.Vector2(x,y)));
-
-		const shared = {
-			uRes:{value:new THREE.Vector2(1,1)},
-			uShine:{value:-1},
-			uMin:{value:new THREE.Vector2(-SIZE.x / 2,-SIZE.y / 2)},
-			uSize:{value:new THREE.Vector2(SIZE.x,SIZE.y)},
-		};
-
-		const VERTEX = `
-			uniform vec2 uRes;
-			uniform vec2 uMin;
-			uniform vec2 uSize;
-			varying vec3 vAffine;
-			varying vec3 vView;
-			varying float vFront;
-
-			void main() {
-				vec4 view = modelViewMatrix * vec4(position, 1.0);
-				vec4 clip = projectionMatrix * view;
-				vec2 grid = uRes * 0.5;
-				clip.xy = floor(clip.xy / clip.w * grid + 0.5) / grid * clip.w; // vertices snap to whole pixels
-				gl_Position = clip;
-				vec2 uv = (position.xy - uMin) / uSize;
-				vAffine = vec3(uv * clip.w, clip.w); // read back as uv, this undoes perspective correction: affine, warping textures
-				vView = view.xyz;
-				vFront = normal.z;
-			}
-		`;
-
-		const FRAGMENT = `
-			uniform sampler2D uTex;
-			uniform vec3 uRim;
-			uniform vec3 uSide;
-			uniform vec2 uRes;
-			uniform float uShine;
-			varying vec3 vAffine;
-			varying vec3 vView;
-			varying float vFront;
-
-			float getBayer2(vec2 a) {
-				a = floor(a);
-				return fract(dot(a, vec2(0.5, a.y * 0.75)));
-			}
-
-			float getBayer4(vec2 a) {
-				return getBayer2(0.5 * a) * 0.25 + getBayer2(a);
-			}
-
-			void main() {
-				vec3 normal = normalize(cross(dFdx(vView), dFdy(vView))); // one normal per polygon: flat shading
-				float light = max(dot(normal, normalize(vec3(-0.45, 0.55, 0.7))), 0.0);
-				vec3 colour;
-
-				if (abs(vFront) > 0.5) {
-					vec2 uv = vAffine.xy / vAffine.z;
-					uv.x = vFront > 0.0 ? uv.x : 1.0 - uv.x; // the back shows the logo too, reading the right way round
-					vec4 texel = texture2D(uTex, uv);
-					colour = mix(uRim, texel.rgb, texel.a) * (0.82 + 0.28 * light);
-					float across = gl_FragCoord.x / uRes.x + gl_FragCoord.y / uRes.y * 0.35;
-					colour += smoothstep(0.09, 0.0, abs(across - uShine)) * 0.6 * texel.a;
-				} else {
-					float lit = floor((0.3 + 0.85 * light) * 5.0 + 0.5) / 5.0;
-					colour = uSide * lit;
-				}
-
-				colour = floor(colour * 31.0 + getBayer4(gl_FragCoord.xy)) / 31.0; // 5 bits a channel, dithered
-				gl_FragColor = vec4(colour, 1.0);
-			}
-		`;
-
-		const makeMaterial = (texture,rim,side) => new THREE.ShaderMaterial({
-			uniforms:{...shared,uTex:{value:texture},uRim:{value:new THREE.Color(...rim)},uSide:{value:new THREE.Color(...side)}},
-			vertexShader:VERTEX,
-			fragmentShader:FRAGMENT,
-			extensions:{derivatives:true},
-		});
-
-		const makeSlab = (shape,depth,material) => {
-			const geometry = new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:false});
-			geometry.translate(0,0,-depth / 2);
-			return new THREE.Mesh(geometry,material);
-		};
+		const shine = {value:-1};
+		const resolution = {value:new THREE.Vector2(1,1)};
+		const CHROME = new THREE.Color(0.8,0.82,0.88);
 
 		new THREE.TextureLoader().load('assets/logo.webp',(texture) => {
-			texture.magFilter = THREE.NearestFilter;
-			texture.minFilter = THREE.NearestFilter;
-			texture.generateMipmaps = false;
+			texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+			//The face: the artwork, lit a little, with a band of light passing over it
+			const face = new THREE.ShaderMaterial({
+				uniforms:{
+					uTex:{value:texture},
+					uMin:{value:new THREE.Vector2(-width / 2 / UNIT,-height / 2 / UNIT)},
+					uSize:{value:new THREE.Vector2(width / UNIT,height / UNIT)},
+					uEdge:{value:CHROME},
+					uShine:shine,
+					uRes:resolution,
+				},
+				vertexShader:`
+					uniform vec2 uMin;
+					uniform vec2 uSize;
+					varying vec2 vUv;
+					varying vec3 vNormal;
+
+					void main() {
+						vUv = (position.xy - uMin) / uSize;
+						vNormal = normalize(normalMatrix * normal);
+						gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+					}
+				`,
+				fragmentShader:`
+					uniform sampler2D uTex;
+					uniform vec3 uEdge;
+					uniform float uShine;
+					uniform vec2 uRes;
+					varying vec2 vUv;
+					varying vec3 vNormal;
+
+					void main() {
+						vec4 texel = texture2D(uTex, vUv);
+						vec3 colour = mix(uEdge, texel.rgb, texel.a);
+						colour *= 0.86 + 0.18 * max(dot(normalize(vNormal), normalize(vec3(-0.3, 0.4, 1.0))), 0.0);
+						float across = gl_FragCoord.x / uRes.x + gl_FragCoord.y / uRes.y * 0.35;
+						colour += smoothstep(0.07, 0.0, abs(across - uShine)) * 0.5 * texel.a;
+						gl_FragColor = vec4(colour, 1.0);
+					}
+				`,
+			});
+
+			//The sides: polished chrome
+			const sides = new THREE.MeshPhongMaterial({color:new THREE.Color(0.58,0.6,0.67),specular:0xdfe6ff,shininess:90});
 
 			const scene = new THREE.Scene();
-			const camera = new THREE.PerspectiveCamera(26,860 / 320,0.1,100);
-			const logo = new THREE.Group();
-			logo.add(makeSlab(getEllipse(),ELLIPSE.depth,makeMaterial(texture,[0.88,0.9,0.95],[0.78,0.8,0.88])));
-			logo.add(makeSlab(getBar(),BAR.depth,makeMaterial(texture,[0.02,0.02,0.03],[0.34,0.34,0.4])));
+			const logo = new THREE.Mesh(geometry,[face,sides]);
 			scene.add(logo);
-			camera.position.set(0,0.3,9.4);
-			camera.lookAt(0,0,0);
+			scene.add(new THREE.AmbientLight(0xffffff,0.35));
+			const key = new THREE.DirectionalLight(0xffffff,0.75);
+			key.position.set(-1.5,2,3);
+			scene.add(key);
+			const fill = new THREE.DirectionalLight(0xb8c8ff,0.35);
+			fill.position.set(0,-1,2);
+			scene.add(fill);
 
-			//Drawn at about half the page's pixels and stretched, so the pixels show
+			//A long lens, nearly flat: edge-on, the logo looks the same from either end
+			const camera = new THREE.PerspectiveCamera(10,860 / 320,1,100);
+			camera.position.set(0,0,24);
+
 			const fit = () => {
-				const width = Math.min(560,Math.round(canvas.clientWidth * 0.62));
-				const height = Math.round(width * 320 / 860);
-				renderer.setPixelRatio(1);
-				renderer.setSize(width,height,false);
-				shared.uRes.value.set(width,height);
+				renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+				renderer.setSize(canvas.clientWidth,Math.round(canvas.clientWidth * 320 / 860),false);
+				renderer.getDrawingBufferSize(resolution.value);
 			};
 
-			const SHINE_EVERY = 5.5;
-			const TURN = 18; // seconds for one full turn
 			const draw = (seconds) => {
-				logo.rotation.y = seconds / TURN * Math.PI * 2; // a slow, steady turn
-				logo.position.y = Math.sin(seconds * 0.8) * 0.05; // and a little bob
+				const angle = seconds / TURN * Math.PI * 2;
+				logo.rotation.y = ((angle + Math.PI / 2) % Math.PI) - Math.PI / 2;
+				logo.position.y = Math.sin(seconds * 0.8) * 0.05;
 				const phase = (seconds % SHINE_EVERY) / SHINE_EVERY;
-				shared.uShine.value = phase < 0.5 ? -1 : -0.3 + (phase - 0.5) / 0.4 * 1.9;
+				shine.value = phase < 0.5 ? -1 : -0.3 + (phase - 0.5) / 0.4 * 1.9;
 				renderer.render(scene,camera);
 			};
 

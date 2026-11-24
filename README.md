@@ -6,11 +6,11 @@ https://software-98.github.io.
 - `app-ads.txt`: the authorised ad sellers for the AdMob account. AdMob reads it
   from the root of the developer website listed on Google Play, so it must stay
   at the root of this site.
-- `index.html`: the site, one page. The logo is a low-poly 3D model drawn with
-  WebGL (three.js r128) the way a 1998 console would: about 50 polygons, vertices
-  snapped to the pixel grid, affine texture warping, flat shading and 15-bit
-  dithered colour, rendered at about half resolution and scaled up. Browsers
-  without WebGL see the flat logo. Below it, shelves of cases, each a six-sided
+- `index.html`: the site, one page. The logo is a solid drawn with WebGL
+  (three.js r128): its exact outline, traced from the artwork into 164 points
+  (`OUTLINE` in the page), extruded, with the artwork on its face and chrome
+  sides. It turns slowly and always shows its face. Browsers without WebGL see
+  the flat logo. Below it, shelves of cases, each a six-sided
   CSS 3D box (jewel cases for apps, portrait keep cases for PC games).
 - `assets/`: the logo (`logo.webp`, cut from the master `software_98_logo.png`;
   `logo-tile.webp`, the background), the covers, FoodTrax's icon, the pixel
