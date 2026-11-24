@@ -596,15 +596,17 @@
 
 	}
 
-	/*A slight VHS look over the whole page: scan lines, tape grain, a tracking band rolling down, soft dark edges, colour fringes on the headings*/
+	/*Home video on VHS: a soft, warm, over-saturated picture, colour bleeding sideways, tape grain, the picture jumping now and then,
+	a tracking streak rolling through, the ragged head-switching noise along the bottom, and the camcorder's PLAY and date on screen*/
 	.vhs {
 		position: fixed;
 		inset: 0;
 		z-index: 50;
 		pointer-events: none;
 		overflow: hidden;
-		background: radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.6) 100%), repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0 1px, transparent 1px 3px);
-		animation: flicker 0.12s steps(2) infinite;
+		background: radial-gradient(ellipse 125% 95% at 50% 50%, transparent 62%, rgba(0, 0, 0, 0.5) 100%);
+		-webkit-backdrop-filter: blur(0.6px) saturate(1.35) sepia(0.12) contrast(1.05);
+		backdrop-filter: blur(0.6px) saturate(1.35) sepia(0.12) contrast(1.05);
 	}
 
 	.vhs::before {
@@ -612,22 +614,86 @@
 		position: absolute;
 		inset: -160px;
 		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.1 -0.3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-		opacity: 0.1;
+		opacity: 0.09;
 		animation: grain 0.4s steps(4) infinite;
 	}
 
+	/*A tracking streak: a thin band of white noise rolling up the picture*/
 	.vhs::after {
 		content: '';
 		position: absolute;
-		left: 0;
-		right: 0;
+		left: -20px;
+		right: -20px;
 		top: 0;
-		height: 120px;
-		background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.05) 30%, rgba(200, 220, 255, 0.13) 48%, rgba(0, 0, 0, 0.25) 52%, rgba(255, 255, 255, 0.04) 70%, transparent);
-		-webkit-backdrop-filter: blur(1.2px) saturate(1.6);
-		backdrop-filter: blur(1.2px) saturate(1.6); /* the picture smears where the tracking band passes */
-		transform: translateY(-150px);
-		animation: tracking 8s linear infinite;
+		height: 26px;
+		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='24'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6 0.02' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.6 -1.35'/%3E%3C/filter%3E%3Crect width='300' height='24' filter='url(%23s)'/%3E%3C/svg%3E");
+		background-size: 300px 26px;
+		opacity: 0.55;
+		transform: translateY(110vh);
+		animation: tracking 9s linear infinite, streak 0.2s steps(3) infinite;
+	}
+
+	/*Head-switching noise: the ragged, jittering strip at the foot of a VHS picture*/
+	.vhs-foot {
+		position: absolute;
+		left: -30px;
+		right: -30px;
+		bottom: 0;
+		height: 12px;
+		background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='24'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6 0.02' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.6 -1.35'/%3E%3C/filter%3E%3Crect width='300' height='24' filter='url(%23s)'/%3E%3C/svg%3E"), linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55));
+		background-size: 300px 12px, 100% 100%;
+		opacity: 0.8;
+		animation: streak 0.15s steps(3) infinite, wobble 0.3s steps(2) infinite;
+	}
+
+	/*The camcorder's on-screen text*/
+	.vhs-osd {
+		position: absolute;
+		color: #ffffff;
+		font: 26px/1.05 var(--pixel);
+		letter-spacing: 0.06em;
+		text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8), -1px 0 rgba(255, 40, 90, 0.6), 1px 0 rgba(40, 210, 255, 0.6);
+		opacity: 0.85;
+	}
+
+	.vhs-play {
+		top: max(18px, env(safe-area-inset-top, 0px));
+		left: max(22px, env(safe-area-inset-left, 0px));
+	}
+
+	.vhs-play b {
+		font-weight: normal;
+		animation: blink 1.2s steps(1) infinite;
+	}
+
+	.vhs-date {
+		right: max(22px, env(safe-area-inset-right, 0px));
+		bottom: max(26px, env(safe-area-inset-bottom, 0px));
+		text-align: right;
+	}
+
+	/*Now and then the picture jumps sideways*/
+	.hero,
+	main,
+	footer {
+		animation: jump 7s steps(1) infinite;
+	}
+
+	@keyframes jump {
+		0%,
+		91%,
+		100% {
+			transform: none;
+		}
+		92% {
+			transform: translateX(3px);
+		}
+		93% {
+			transform: translateX(-2px);
+		}
+		94% {
+			transform: translateX(1px) skewX(-0.6deg);
+		}
 	}
 
 	@keyframes grain {
@@ -642,28 +708,50 @@
 		}
 	}
 
-	@keyframes flicker {
+	@keyframes streak {
+		33% {
+			background-position: -97px 0;
+		}
+		66% {
+			background-position: 141px 0;
+		}
+	}
+
+	@keyframes wobble {
 		50% {
-			background-color: rgba(255, 255, 255, 0.012);
+			transform: translateX(-6px) skewX(4deg);
+		}
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0;
 		}
 	}
 
 	@keyframes tracking {
 		0%,
-		25% {
-			transform: translateY(-150px);
+		70% {
+			transform: translateY(110vh);
 		}
 		100% {
-			transform: translateY(110vh);
+			transform: translateY(-40px);
 		}
 	}
 
+	/*Colour bleeding off the headings and names*/
 	.shelf h2 {
-		filter: drop-shadow(-2.5px 0 rgba(255, 40, 90, 0.6)) drop-shadow(2.5px 0 rgba(40, 210, 255, 0.6));
+		filter: drop-shadow(-2px 0 rgba(255, 40, 90, 0.55)) drop-shadow(2px 0 rgba(40, 210, 255, 0.5));
 	}
 
 	.info h3 {
-		text-shadow: -1.5px 0 rgba(255, 40, 90, 0.55), 1.5px 0 rgba(40, 210, 255, 0.55);
+		text-shadow: -1.5px 0 rgba(255, 40, 90, 0.5), 2px 0 rgba(40, 210, 255, 0.45);
+	}
+
+	@media (max-width: 560px) {
+		.vhs-osd {
+			font-size: 20px;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -673,8 +761,12 @@
 
 		body::before,
 		.floor,
-		.vhs,
-		.vhs::before {
+		.vhs::before,
+		.vhs-foot,
+		.vhs-play b,
+		.hero,
+		main,
+		footer {
 			animation: none;
 		}
 
@@ -833,7 +925,11 @@
 	<p class="copyright">© <span id="year">2026</span> Software 98</p>
 </footer>
 
-<div class="vhs" aria-hidden="true"></div>
+<div class="vhs" aria-hidden="true">
+	<div class="vhs-osd vhs-play">PLAY <b>&#9654;</b></div>
+	<div class="vhs-osd vhs-date"><span id="vhs-time">PM 12:00</span><br><span id="vhs-day">NOV. 24 1998</span></div>
+	<div class="vhs-foot"></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -964,6 +1060,7 @@
 			//Drawn first into a picture of its own, then shown with every pixel moved to the nearest of the 32 colours
 			const picture = renderer.capabilities.isWebGL2 ? new THREE.WebGLMultisampleRenderTarget(1,1) : new THREE.WebGLRenderTarget(1,1);
 			const palette = [];
+			const pixel = new THREE.Vector2(1,1);
 
 			for (let i = 0; i < PALETTE.length; i += 3) {
 				palette.push(new THREE.Vector3(PALETTE[i],PALETTE[i + 1],PALETTE[i + 2]));
@@ -972,7 +1069,7 @@
 			const screen = new THREE.Scene();
 			const flatCamera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
 			screen.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),new THREE.ShaderMaterial({
-				uniforms:{uPicture:{value:picture.texture},uPalette:{value:palette}},
+				uniforms:{uPicture:{value:picture.texture},uPalette:{value:palette},uPixel:{value:pixel}},
 				vertexShader:`
 					varying vec2 vUv;
 
@@ -984,16 +1081,11 @@
 				fragmentShader:`
 					uniform sampler2D uPicture;
 					uniform vec3 uPalette[${palette.length}];
+					uniform vec2 uPixel;
 					varying vec2 vUv;
 
-					void main() {
-						vec4 texel = texture2D(uPicture, vUv);
-
-						if (texel.a < 0.004) {
-							discard;
-						}
-
-						vec3 colour = texel.rgb / texel.a; // its edges were blended with the clear background: undone before matching
+					vec3 getNearest(vec4 texel) {
+						vec3 colour = texel.a > 0.004 ? texel.rgb / texel.a : vec3(0.0); // its edges were blended with the clear background: undone before matching
 						vec3 nearest = uPalette[0];
 						float best = 1e9;
 
@@ -1007,7 +1099,21 @@
 							}
 						}
 
-						gl_FragColor = vec4(nearest * texel.a, texel.a);
+						return nearest;
+					}
+
+					void main() {
+						vec4 centre = texture2D(uPicture, vUv);
+						vec4 left = texture2D(uPicture, vUv - vec2(uPixel.x * 2.5, 0.0));
+						vec4 right = texture2D(uPicture, vUv + vec2(uPixel.x * 2.5, 0.0));
+						float alpha = max(centre.a, max(left.a, right.a));
+
+						if (alpha < 0.004) {
+							discard;
+						}
+
+						vec3 colour = vec3(getNearest(left).r * left.a, getNearest(centre).g * centre.a, getNearest(right).b * right.a); // colour bleeding sideways, as on tape
+						gl_FragColor = vec4(colour, alpha);
 					}
 				`,
 				transparent:true,
@@ -1021,6 +1127,7 @@
 				renderer.setSize(canvas.clientWidth,Math.round(canvas.clientWidth * 320 / 860),false);
 				renderer.getDrawingBufferSize(resolution.value);
 				picture.setSize(resolution.value.x,resolution.value.y);
+				pixel.set(1 / resolution.value.x,1 / resolution.value.y);
 			};
 
 			const draw = (seconds) => {
@@ -1070,6 +1177,18 @@
 	startLogo();
 
 	document.getElementById('year').textContent = new Date().getFullYear();
+
+	//The camcorder's date stamp: the visitor's day and time, in 1998
+	const MONTHS = ['JAN.','FEB.','MAR.','APR.','MAY','JUN.','JUL.','AUG.','SEP.','OCT.','NOV.','DEC.'];
+	const showStamp = () => {
+		const now = new Date();
+		const hour = now.getHours() % 12 || 12;
+		document.getElementById('vhs-time').textContent = `${now.getHours() < 12 ? 'AM' : 'PM'} ${hour}:${String(now.getMinutes()).padStart(2,'0')}`;
+		document.getElementById('vhs-day').textContent = `${MONTHS[now.getMonth()]} ${now.getDate()} 1998`;
+	};
+
+	showStamp();
+	setInterval(showStamp,15000);
 </script>
 </body>
 </html>
