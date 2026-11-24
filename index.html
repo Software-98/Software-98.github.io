@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=VT323&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800&family=Michroma&family=VT323&display=swap">
 <style>
 	/*Software 98: a dark shelf of jewel cases under a spinning chrome logo*/
 	:root {
@@ -133,7 +133,7 @@
 		position: relative;
 		width: min(780px, 100%);
 		margin: 0 auto;
-		perspective: 1100px;
+		perspective: 2400px; /* a long lens: the layers behind barely shrink, so the logo's sides show as it turns */
 	}
 
 	.tilt {
@@ -152,10 +152,10 @@
 	@keyframes hover3d {
 		0%,
 		100% {
-			transform: translateY(0) rotateY(-16deg) rotateX(7deg) rotateZ(-1deg);
+			transform: translateY(0) rotateY(-20deg) rotateX(8deg) rotateZ(-1deg);
 		}
 		50% {
-			transform: translateY(-10px) rotateY(16deg) rotateX(-5deg) rotateZ(1deg);
+			transform: translateY(-10px) rotateY(20deg) rotateX(-6deg) rotateZ(1deg);
 		}
 	}
 
@@ -169,7 +169,7 @@
 
 	/*The layers behind the face, each a little further back and darker: the logo's depth*/
 	.logo3d .depth {
-		filter: brightness(0.32) saturate(0.5);
+		filter: brightness(var(--shade, 0.3)) saturate(0.55);
 	}
 
 	.logo3d .face {
@@ -217,16 +217,10 @@
 
 	.tagline {
 		margin: 18px 0 0;
-		color: var(--muted);
-		font: 26px/1.15 var(--pixel);
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		text-wrap: balance;
-	}
-
-	.tagline b {
 		color: var(--ink);
-		font-weight: normal;
+		font: 30px/1.15 var(--pixel);
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
 	}
 
 	/*Shelves*/
@@ -235,10 +229,6 @@
 	}
 
 	.shelf-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 16px;
 		padding-bottom: 12px;
 		margin-bottom: 28px;
 		border-bottom: 1px solid var(--line);
@@ -265,14 +255,6 @@
 		background-clip: text;
 		color: transparent;
 		font-style: italic;
-	}
-
-	.shelf-note {
-		margin: 0;
-		color: var(--faint);
-		font: 20px/1.2 var(--pixel);
-		letter-spacing: 0.04em;
-		text-align: right;
 	}
 
 	.cases {
@@ -393,30 +375,30 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 10px;
-		padding: 12px;
-		background: radial-gradient(circle at 50% 35%, #2f7a4c 0%, #123321 55%, #08170f 100%);
+		gap: 6%;
+		padding: 8%;
+		background: radial-gradient(circle at 50% 40%, #24503a 0%, #163021 50%, #10201a 100%);
+		container-type: inline-size;
 		text-align: center;
 	}
 
 	.cover-foodtrax img {
-		width: 38%;
+		width: 40%;
+		height: auto;
+		aspect-ratio: 1;
 		border-radius: 22%;
 		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 	}
 
+	/*FoodTrax's wordmark, as on its store art: Inter Tight at its heaviest, Trax in the app's green*/
 	.cover-foodtrax strong {
-		color: #ffffff;
-		font: 22px/1 var(--wide);
-		letter-spacing: 0.02em;
-		text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+		color: #eef3ef;
+		font: 800 15cqi/1 'Inter Tight', 'Segoe UI', sans-serif;
+		letter-spacing: -0.02em;
 	}
 
-	.cover-foodtrax span {
-		color: #b9e7c8;
-		font: 17px/1 var(--pixel);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+	.cover-foodtrax strong span {
+		color: #5cc98a;
 	}
 
 	/*Under the case: the name, the price, a line about it*/
@@ -529,15 +511,6 @@
 			font-size: 20px;
 		}
 
-		.shelf-head {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 4px;
-		}
-
-		.shelf-note {
-			text-align: left;
-		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -575,30 +548,29 @@
 		</div>
 		<div class="floor"></div>
 	</div>
-	<p class="tagline"><b>PC games</b> with a late-90s soul · <b>Apps</b> for everyday life</p>
+	<p class="tagline">Games - Apps</p>
 </header>
 
 <main class="wrap">
 	<section class="shelf" aria-labelledby="games-title">
 		<div class="shelf-head">
 			<h2 id="games-title">Games</h2>
-			<p class="shelf-note">Insert disc 1</p>
 		</div>
 		<ul class="cases">
 			<li>
-				<a class="item" href="https://itch.io/search?q=Baccarat+Simulator">
+				<a class="item" href="https://play.google.com/store/apps/details?id=com.baccy.baccaratsimulator">
 					<div class="case">
 						<div class="spine" aria-hidden="true">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
-							<span class="spine-platform">PC</span>
+							<span class="spine-platform">MOBILE</span>
 						</div>
-						<div class="cover"><img src="assets/baccarat-cover.png" width="306" height="243" alt=""></div>
+						<div class="cover"><img src="assets/baccarat-cover.png" width="630" height="500" alt=""></div>
 					</div>
 					<div class="info">
-						<h3>Baccarat Simulator <span class="price">$1</span></h3>
+						<h3>Baccarat Simulator</h3>
 						<p>Just the game of Baccarat. No BS.</p>
-						<p class="kind">Card game · itch.io</p>
+						<p class="kind">Card game · Google Play</p>
 					</div>
 				</a>
 			</li>
@@ -608,7 +580,6 @@
 	<section class="shelf" aria-labelledby="apps-title">
 		<div class="shelf-head">
 			<h2 id="apps-title">Apps</h2>
-			<p class="shelf-note">Modern, made for every day</p>
 		</div>
 		<ul class="cases">
 			<li>
@@ -617,18 +588,17 @@
 						<div class="spine" aria-hidden="true">
 							<img src="favicon.png" alt="">
 							<span class="spine-name">SOFTWARE 98</span>
-							<span class="spine-platform">ANDROID</span>
+							<span class="spine-platform">MOBILE</span>
 						</div>
 						<div class="cover cover-foodtrax">
 							<img src="assets/foodtrax-icon.png" width="192" height="192" alt="">
-							<strong>FoodTrax</strong>
-							<span>List · Budget · Calories</span>
+							<strong>Food<span>Trax</span></strong>
 						</div>
 					</div>
 					<div class="info">
 						<h3>FoodTrax <span class="price free">FREE</span></h3>
 						<p>Grocery lists that add up as you shop: a monthly food budget, barcode scanning, calories, kits of the items you buy often, and lists shared live with your household.</p>
-						<p class="kind">Android · Google Play</p>
+						<p class="kind">Mobile · Google Play</p>
 					</div>
 				</a>
 				<p class="links"><a href="https://software-98.github.io/foodtrax-privacy/">FoodTrax privacy policy</a></p>
@@ -641,7 +611,7 @@
 	<div class="footer-grid">
 		<div>
 			<h2>About</h2>
-			<p>Software 98 is an independent studio. The games look back to the late 90s; the apps are modern, made to be useful every day.</p>
+			<p>Software 98 is an independent studio.</p>
 		</div>
 		<div>
 			<h2>Contact</h2>
@@ -654,7 +624,7 @@
 <script>
 	//The logo's depth: copies of it stacked behind the face, each a pixel further back
 	const logo = document.getElementById('logo3d');
-	const DEPTH = 16;
+	const DEPTH = 48;
 	const face = logo.querySelector('.face');
 
 	for (let i = DEPTH; i >= 1; i--) {
@@ -663,7 +633,8 @@
 		layer.src = face.src;
 		layer.alt = '';
 		layer.setAttribute('aria-hidden','true');
-		layer.style.transform = `translateZ(${-i * 1.8}px)`;
+		layer.style.transform = `translateZ(${-i * 1.5}px)`;
+		layer.style.setProperty('--shade',(0.55 - 0.4 * i / DEPTH).toFixed(3)); // lit at the front edge, dark at the back
 		logo.insertBefore(layer,face);
 	}
 
