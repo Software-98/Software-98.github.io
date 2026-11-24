@@ -12,7 +12,8 @@ https://software-98.github.io.
   sides, the back printed from `assets/logo-back.webp`: the artwork mirrored, so
   its edges fit the outline from behind, with the lettering put back to read the
   right way. It turns slowly all the
-  way round, drawn at 70% resolution. Browsers without WebGL see
+  way round, drawn at 70% resolution in 32 colours (`PALETTE`: 24 from the
+  artwork, 8 for the chrome). Browsers without WebGL see
   the flat logo. Below it, shelves of cases, each a six-sided
   CSS 3D box (jewel cases for apps, portrait keep cases for PC games).
 - `assets/`: the logo (`logo.webp`, cut from the master `software_98_logo.png`;
