@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Covers: Baccarat Simulator, Just Baccarat</title>
+<!--The box art for the two Baccarat apps, drawn as 90s game covers. Each .cover is 630 x 500 and is rendered at 2x to assets/ (see README)-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Michroma&family=VT323&display=block">
+<style>
+	:root {
+		--felt: #0b6b42;
+		--felt-dark: #03311d;
+		--gold-1: #fff1b8;
+		--gold-2: #e9c25a;
+		--gold-3: #9c6a17;
+		--red: #c0182b;
+		--black: #18181b;
+		--card: #fffdf6;
+		--noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		padding: 20px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+		background: #222222;
+	}
+
+	.cover {
+		position: relative;
+		width: 630px;
+		height: 500px;
+		overflow: hidden;
+		font-family: 'Cinzel', Georgia, serif;
+	}
+
+	/*Felt: the cloth's weave as fine noise*/
+	.felt {
+		position: absolute;
+		inset: 0;
+		background: var(--noise), radial-gradient(ellipse 80% 70% at 50% 35%, #12844f 0%, var(--felt) 40%, var(--felt-dark) 100%);
+	}
+
+	/*Cards*/
+	.card {
+		position: absolute;
+		width: 150px;
+		height: 210px;
+		border-radius: 12px;
+		background: linear-gradient(160deg, #ffffff, var(--card) 40%, #ece2c8);
+		box-shadow: 0 14px 26px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.18), inset 0 0 0 6px var(--card), inset 0 0 0 7px rgba(0, 0, 0, 0.08);
+		color: var(--black);
+	}
+
+	.card.red {
+		color: var(--red);
+	}
+
+	.card .corner {
+		position: absolute;
+		top: 10px;
+		left: 12px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		font: 900 34px/0.9 'Cinzel', Georgia, serif;
+	}
+
+	.card .corner small {
+		font: 26px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
+	}
+
+	.card .corner.flip {
+		top: auto;
+		left: auto;
+		bottom: 10px;
+		right: 12px;
+		transform: rotate(180deg);
+	}
+
+	.card .pip {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		font: 104px/1 'Segoe UI Symbol', 'DejaVu Sans', sans-serif;
+	}
+
+	.card .face {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		font: 900 112px/1 'Cinzel', Georgia, serif;
+		text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.12);
+	}
+
+	/*Chips: ellipses seen from above at an angle, their edges stacked below*/
+	.stack {
+		position: absolute;
+		width: 112px;
+	}
+
+	.chip {
+		position: absolute;
+		left: 0;
+		width: 112px;
+		height: 50px;
+		border-radius: 50%;
+		background: radial-gradient(ellipse at center, #f6f1e2 0 31%, var(--c) 32% 39%, #f6f1e2 40% 42%, transparent 43%), repeating-conic-gradient(var(--c) 0 22deg, #f6f1e2 22deg 34deg, var(--c) 34deg 45deg);
+		box-shadow: 0 7px 0 var(--edge), 0 9px 6px rgba(0, 0, 0, 0.45), inset 0 0 0 2px rgba(0, 0, 0, 0.18);
+	}
+
+	.chip b {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		color: var(--c);
+		font: 900 26px/1 'Cinzel', Georgia, serif;
+		transform: scaleY(0.46);
+	}
+
+	.chip.green {
+		--c: #1f8a4c;
+		--edge: #0f4d29;
+	}
+
+	.chip.red {
+		--c: #c8202f;
+		--edge: #6d0f18;
+	}
+
+	.chip.black {
+		--c: #26262b;
+		--edge: #0c0c0e;
+	}
+
+	.chip.blue {
+		--c: #1f5fc8;
+		--edge: #0f3272;
+	}
+
+	.s98 {
+		position: absolute;
+		width: 132px;
+		filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.6));
+	}
+
+	/*Baccarat Simulator*/
+	#bs .spot {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(ellipse 45% 55% at 50% 30%, rgba(255, 255, 220, 0.22), transparent 70%), radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+	}
+
+	/*The table's printed lines, in gold*/
+	#bs .table {
+		position: absolute;
+		inset: 0;
+	}
+
+	#bs .led {
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		padding: 4px 12px 2px;
+		background: #031a07;
+		border: 2px solid #7a6a2a;
+		box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9), 0 3px 8px rgba(0, 0, 0, 0.5);
+		color: #4dff5a;
+		font: 34px/1 'VT323', monospace;
+		letter-spacing: 0.06em;
+		text-shadow: 0 0 8px rgba(77, 255, 90, 0.8);
+	}
+
+	#bs .title {
+		position: absolute;
+		top: 40px;
+		left: 50%;
+		width: 470px;
+		transform: translateX(-50%);
+		filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.55));
+	}
+
+	/*SIMULATOR, in 90s chrome: an extended face, a hard outline, and a metal gradient*/
+	#bs .sub {
+		position: absolute;
+		top: 182px;
+		left: 0;
+		right: 0;
+		text-align: center;
+		font: 44px/1 'Michroma', sans-serif;
+		letter-spacing: 0.08em;
+		transform: skewX(-10deg);
+	}
+
+	#bs .sub span {
+		background: linear-gradient(180deg, #ffffff 0%, #dfe3ec 42%, #6f7486 50%, #eef0f6 64%, #a7abba 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		-webkit-text-stroke: 1.5px #101014;
+		filter: drop-shadow(3px 4px 0 #101014) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6));
+	}
+
+	#bs .burst {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		width: 112px;
+		height: 112px;
+		transform: rotate(-14deg);
+		filter: drop-shadow(0 5px 6px rgba(0, 0, 0, 0.55));
+	}
+
+	#bs .band {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 46px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 18px;
+		background: linear-gradient(180deg, #121214, #050506);
+		border-top: 2px solid var(--gold-2);
+		color: var(--gold-2);
+		font: 700 17px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.18em;
+	}
+
+	#bs .band .s98 {
+		position: static;
+		width: 118px;
+	}
+
+	/*Just Baccarat*/
+
+	/*The burgundy header of its store art, with the gold-lined arc*/
+	#jb .crown {
+		position: absolute;
+		left: -40px;
+		right: -40px;
+		top: -260px;
+		height: 500px;
+		border-radius: 0 0 50% 50%;
+		background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 14px), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 14px), radial-gradient(ellipse at 50% 85%, #7a1426, #4a0a16 55%, #2a050c);
+		box-shadow: 0 0 0 4px #2a050c, 0 0 0 7px var(--gold-2), 0 0 0 9px var(--gold-3), 0 14px 26px rgba(0, 0, 0, 0.7);
+	}
+
+	#jb .just,
+	#jb .bacc {
+		position: absolute;
+		left: 0;
+		right: 0;
+		text-align: center;
+		background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 45%, var(--gold-3) 70%, #f3d98a 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		filter: drop-shadow(0 3px 0 #2a050c) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.6));
+	}
+
+	#jb .just {
+		top: 26px;
+		font: 900 34px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.5em;
+		padding-left: 0.5em;
+	}
+
+	#jb .bacc {
+		top: 68px;
+		font: 900 74px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.04em;
+	}
+
+	#jb .rule {
+		position: absolute;
+		top: 156px;
+		left: 50%;
+		width: 300px;
+		transform: translateX(-50%);
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		color: var(--gold-2);
+		font: 700 15px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.3em;
+		white-space: nowrap;
+	}
+
+	#jb .rule::before,
+	#jb .rule::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
+	}
+
+	/*The scoreboard: a bead plate of Banker and Player wins*/
+	#jb .beads {
+		position: absolute;
+		left: 26px;
+		top: 262px;
+		display: grid;
+		grid-template-columns: repeat(4, 26px);
+		gap: 6px;
+		padding: 9px;
+		background: rgba(0, 0, 0, 0.35);
+		border: 1px solid rgba(233, 194, 90, 0.5);
+		border-radius: 6px;
+	}
+
+	#jb .beads i {
+		width: 26px;
+		height: 26px;
+		display: grid;
+		place-items: center;
+		border-radius: 6px;
+		color: #ffffff;
+		font: 900 15px/1  'Cinzel', Georgia, serif;
+		font-style: normal;
+		box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+	}
+
+	#jb .beads .b {
+		background: #c8202f;
+	}
+
+	#jb .beads .p {
+		background: #1f6fe0;
+	}
+
+	#jb .beads .e {
+		background: transparent;
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+	}
+
+	#jb .plaque {
+		position: absolute;
+		top: 186px;
+		left: 0;
+		right: 0;
+		color: var(--gold-1);
+		font: 700 12px/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.32em;
+		text-align: center;
+		opacity: 0.85;
+	}
+
+	#jb .s98 {
+		right: 18px;
+		bottom: 14px;
+	}
+</style>
+</head>
+<body>
+
+<!--Baccarat Simulator: the game's own table, its script logo, chrome SIMULATOR, an LED credit meter and a starburst-->
+<div class="cover" id="bs">
+	<div class="felt"></div>
+	<svg class="table" viewBox="0 0 630 500" aria-hidden="true">
+		<g fill="none" stroke="#e9c25a" stroke-opacity="0.55" stroke-width="2">
+			<path d="M -20 470 Q 315 250 650 470"/>
+			<path d="M -20 520 Q 315 300 650 520"/>
+		</g>
+		<g fill="#e9c25a" fill-opacity="0.6" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="18" letter-spacing="6" text-anchor="middle">
+			<text x="130" y="432" transform="rotate(-17 130 432)">PLAYER</text>
+			<text x="500" y="432" transform="rotate(17 500 432)">BANKER</text>
+		</g>
+	</svg>
+	<div class="spot"></div>
+	<div class="led">$ 1000</div>
+	<img class="title" src="baccarat-logo.png" alt="">
+	<div class="sub"><span>SIMULATOR</span></div>
+	<svg class="burst" viewBox="-64 -64 128 128" aria-hidden="true">
+		<polygon id="burst-shape" fill="#ffd400" stroke="#b30f1c" stroke-width="3"/>
+		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="17" fill="#b30f1c" y="-4">NO</text>
+		<text text-anchor="middle" font-family="Michroma, sans-serif" font-size="27" fill="#b30f1c" y="24">BS!</text>
+	</svg>
+
+	<div class="stack" style="left:70px;top:330px">
+		<div class="chip black" style="top:36px"></div>
+		<div class="chip black" style="top:27px"></div>
+		<div class="chip red" style="top:18px"></div>
+		<div class="chip red" style="top:9px"></div>
+		<div class="chip red" style="top:0"><b>5</b></div>
+	</div>
+	<div class="stack" style="left:150px;top:350px">
+		<div class="chip green" style="top:18px"></div>
+		<div class="chip green" style="top:9px"></div>
+		<div class="chip green" style="top:0"><b>25</b></div>
+	</div>
+
+	<div class="card" style="left:290px;top:252px;transform:rotate(-12deg)">
+		<div class="corner">K<small>♠&#xFE0E;</small></div>
+		<div class="face">K</div>
+		<div class="corner flip">K<small>♠&#xFE0E;</small></div>
+	</div>
+	<div class="card red" style="left:400px;top:238px;transform:rotate(9deg)">
+		<div class="corner">9<small>♥&#xFE0E;</small></div>
+		<div class="pip">♥&#xFE0E;</div>
+		<div class="corner flip">9<small>♥&#xFE0E;</small></div>
+	</div>
+
+	<div class="band"><span>TIE PAYS 8 TO 1</span><img class="s98" src="../assets/logo.webp" alt=""></div>
+</div>
+
+<!--Just Baccarat: its burgundy and gold, the felt, its K and 9, chips and the bead plate-->
+<div class="cover" id="jb">
+	<div class="felt"></div>
+	<div class="crown"></div>
+	<div class="just">JUST</div>
+	<div class="bacc">BACCARAT</div>
+	<div class="rule">PUNTO BANCO</div>
+
+	<div class="beads">
+		<i class="b">B</i><i class="p">P</i><i class="b">B</i><i class="b">B</i>
+		<i class="b">B</i><i class="p">P</i><i class="p">P</i><i class="e"></i>
+		<i class="b">B</i><i class="e"></i><i class="p">P</i><i class="e"></i>
+	</div>
+
+	<div class="stack" style="left:40px;top:395px">
+		<div class="chip green" style="top:27px"></div>
+		<div class="chip green" style="top:18px"></div>
+		<div class="chip green" style="top:9px"></div>
+		<div class="chip green" style="top:0"><b>25</b></div>
+	</div>
+	<div class="stack" style="left:120px;top:415px">
+		<div class="chip red" style="top:9px"></div>
+		<div class="chip red" style="top:0"><b>5</b></div>
+	</div>
+
+	<div class="card red" style="left:250px;top:250px;transform:rotate(-14deg)">
+		<div class="corner">K<small>♥&#xFE0E;</small></div>
+		<div class="face">K</div>
+		<div class="corner flip">K<small>♥&#xFE0E;</small></div>
+	</div>
+	<div class="card" style="left:362px;top:236px;transform:rotate(8deg)">
+		<div class="corner">9<small>♣&#xFE0E;</small></div>
+		<div class="pip">♣&#xFE0E;</div>
+		<div class="corner flip">9<small>♣&#xFE0E;</small></div>
+	</div>
+
+	<div class="plaque">PLAYS OFFLINE</div>
+	<img class="s98" src="../assets/logo.webp" alt="">
+</div>
+
+<script>
+	//The starburst's points
+	const points = [];
+
+	for (let i = 0; i < 32; i++) {
+		const radius = i % 2 ? 46 : 62;
+		const angle = i / 32 * Math.PI * 2;
+		points.push(`${(Math.cos(angle) * radius).toFixed(1)},${(Math.sin(angle) * radius).toFixed(1)}`);
+	}
+
+	document.getElementById('burst-shape').setAttribute('points',points.join(' '));
+</script>
+</body>
+</html>

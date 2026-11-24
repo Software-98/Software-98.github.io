@@ -21,3 +21,10 @@ To add a game or app, copy one `<li>` in its shelf and change the cover, the
 spine's platform, the name, the price and the link. Jewel-case covers are
 315 x 250; a PC game's box art is portrait (add `tall` to its `box`). Give a
 changed image a new filename: Pages lets browsers keep images for 10 minutes.
+
+## Covers
+
+`art-source/covers.html` draws the Baccarat Simulator and Just Baccarat box
+art in HTML (630 x 500 each). To change one, edit it, open it from a local
+server at the repository root, and screenshot each `.cover` element at 2x into
+`assets/` as JPEG, under a new filename.
