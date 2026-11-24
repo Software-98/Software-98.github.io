@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@800&family=Michroma&family=VT323&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@900&family=Inter+Tight:wght@800&family=Michroma&family=Silkscreen:wght@700&family=VT323&display=swap">
 <style>
 	/*Software 98: a dark shelf of 3D cases under the logo as a turning solid*/
 	:root {
@@ -417,20 +417,45 @@
 		text-decoration: underline;
 	}
 
-	/*FoodTrax's cover, drawn rather than pictured*/
-	.cover-foodtrax {
+	/*An app's cover: a black strip naming the platform and kind of app, then the app's icon over its name on a plain background*/
+	.cover-app {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 6%;
-		padding: 8%;
-		background: radial-gradient(circle at 50% 40%, #24503a 0%, #163021 50%, #10201a 100%);
+		background: var(--bg);
 		container-type: inline-size;
 		text-align: center;
 	}
 
-	.cover-foodtrax img {
+	.cover-app .strip {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 8cqi;
+		padding: 0 3cqi;
+		background: linear-gradient(180deg, #2a2a2e, #050506);
+		box-shadow: 0 0.4cqi 0 rgba(255, 255, 255, 0.18);
+		color: #ffffff;
+		font: 2.4cqi/1 var(--wide);
+		letter-spacing: 0.12em;
+		white-space: nowrap;
+	}
+
+	.cover-app .strip img {
+		height: 5.4cqi;
+		width: auto;
+	}
+
+	.cover-app .app {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 5cqi;
+		padding: 4cqi 8cqi;
+	}
+
+	.cover-app .app img {
 		width: 40%;
 		height: auto;
 		aspect-ratio: 1;
@@ -438,15 +463,37 @@
 		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
 	}
 
+	.cover-app strong {
+		font-weight: normal;
+	}
+
 	/*FoodTrax's wordmark, as on its store art: Inter Tight at its heaviest, Trax in the app's green*/
-	.cover-foodtrax strong {
+	.cover-app .foodtrax {
 		color: #eef3ef;
 		font: 800 15cqi/1 'Inter Tight', 'Segoe UI', sans-serif;
 		letter-spacing: -0.02em;
 	}
 
-	.cover-foodtrax strong span {
+	.cover-app .foodtrax span {
 		color: #5cc98a;
+	}
+
+	/*Baccarat Simulator's name in pixel capitals, like its icon*/
+	.cover-app .baccarat-sim {
+		color: #f3e6c4;
+		font: 700 7.4cqi/1.05 'Silkscreen', 'Courier New', monospace;
+		text-shadow: 0.6cqi 0.6cqi 0 #062a1a;
+	}
+
+	/*Just Baccarat's name in the gold capitals of its store art*/
+	.cover-app .just-baccarat {
+		background: linear-gradient(180deg, #fff6c9 0%, #f0c757 45%, #a66d12 72%, #f3d98a 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		font: 900 9.6cqi/1 'Cinzel', Georgia, serif;
+		letter-spacing: 0.03em;
+		filter: drop-shadow(0 0.5cqi 0 #2a050c);
 	}
 
 	/*Under the case: the name, the price, a line about it*/
@@ -630,9 +677,9 @@
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.software98.foodtrax">
 					<div class="box-stage" aria-hidden="true">
 						<div class="box">
-							<div class="face front"><div class="hinge"></div><div class="cover cover-foodtrax">
-								<img src="assets/foodtrax-icon.png" width="192" height="192" alt="">
-								<strong>Food<span>Trax</span></strong>
+							<div class="face front"><div class="hinge"></div><div class="cover cover-app" style="--bg:radial-gradient(circle at 50% 45%, #24503a 0%, #163021 50%, #10201a 100%)">
+								<div class="strip"><span>MOBILE · SHOPPING</span><img src="assets/logo.webp" alt=""></div>
+								<div class="app"><img src="assets/foodtrax-icon.png" width="256" height="256" alt=""><strong class="foodtrax">Food<span>Trax</span></strong></div>
 							</div></div>
 							<div class="face back"></div>
 							<div class="face spine">
@@ -657,7 +704,10 @@
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.baccy.baccaratsimulator">
 					<div class="box-stage" aria-hidden="true">
 						<div class="box">
-							<div class="face front"><div class="hinge"></div><div class="cover"><img src="assets/baccarat-sim-box.jpg" width="1260" height="1000" alt=""></div></div>
+							<div class="face front"><div class="hinge"></div><div class="cover cover-app" style="--bg:radial-gradient(circle at 50% 45%, #13704a 0%, #0a3f29 55%, #05241a 100%)">
+								<div class="strip"><span>MOBILE · CARD GAME</span><img src="assets/logo.webp" alt=""></div>
+								<div class="app"><img src="assets/baccarat-sim-icon.png" width="256" height="256" alt=""><strong class="baccarat-sim">BACCARAT<br>SIMULATOR</strong></div>
+							</div></div>
 							<div class="face back"></div>
 							<div class="face spine">
 							<img src="favicon.png" alt="">
@@ -670,7 +720,7 @@
 						</div>
 					</div>
 					<div class="info">
-						<h3>Baccarat Simulator</h3>
+						<h3>Baccarat Simulator <span class="price free">FREE</span></h3>
 						<p>Just the game of Baccarat. No BS.</p>
 						<p class="kind">Card game · Google Play</p>
 					</div>
@@ -680,7 +730,10 @@
 				<a class="item" href="https://play.google.com/store/apps/details?id=com.just.baccarat">
 					<div class="box-stage" aria-hidden="true">
 						<div class="box">
-							<div class="face front"><div class="hinge"></div><div class="cover"><img src="assets/just-baccarat-box.jpg" width="1260" height="1000" alt=""></div></div>
+							<div class="face front"><div class="hinge"></div><div class="cover cover-app" style="--bg:radial-gradient(circle at 50% 45%, #7a1426 0%, #4a0a16 55%, #24050b 100%)">
+								<div class="strip"><span>MOBILE · CARD GAME</span><img src="assets/logo.webp" alt=""></div>
+								<div class="app"><img src="assets/just-baccarat-icon.png" width="256" height="256" alt=""><strong class="just-baccarat">JUST BACCARAT</strong></div>
+							</div></div>
 							<div class="face back"></div>
 							<div class="face spine">
 							<img src="favicon.png" alt="">

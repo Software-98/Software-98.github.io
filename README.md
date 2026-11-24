@@ -27,7 +27,11 @@ changed image a new filename: Pages lets browsers keep images for 10 minutes.
 
 ## Covers
 
-`art-source/covers.html` draws the Baccarat Simulator and Just Baccarat box
-art in HTML (630 x 500 each). To change one, edit it, open it from a local
-server at the repository root, and screenshot each `.cover` element at 2x into
-`assets/` as JPEG, under a new filename.
+App covers are drawn in the page itself (`.cover-app`): a black strip naming the
+platform and kind of app, then the app's icon over its name on a plain
+background. To add an app, copy one and change its `--bg`, strip text, icon
+(256 x 256 in `assets/`) and name.
+
+`art-source/covers.html` keeps an earlier, unused style for the two Baccarat
+apps: late-90s casino CD-ROM box art. To use it, open it from a local server at
+the repository root and screenshot each `.cover` at 2x into `assets/`.
