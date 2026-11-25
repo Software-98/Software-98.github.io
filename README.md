@@ -18,7 +18,7 @@ https://software-98.github.io.
   CSS 3D box (jewel cases for apps, portrait keep cases for PC games).
 - `assets/`: the logo (`logo.webp`, cut from the master `software_98_logo.png`;
   `logo-tile.webp`, the background), the covers, FoodTrax's icon, the pixel
-  cursors, and `og.png`, the picture shown when the site is shared.
+  cursors, and `og-vhs.png`, the picture shown when the site is shared (a shot of the hero: the 3D logo on the dark background, with the VHS look).
 - `favicon.png`, `apple-touch-icon.png`: the logo's "98" on a black tile.
 
 To add a game or app, copy one `<li>` in its shelf and change the cover, the
